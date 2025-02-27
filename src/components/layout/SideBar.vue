@@ -18,7 +18,7 @@
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-         class="w-6 h-6 text-gray-800 cursor-pointer transition-transform ml-2"
+          class="w-6 h-6 text-gray-800 cursor-pointer transition-transform ml-2"
           :class="{ 'rotate-180': isOpen }"
         >
           <path
@@ -51,10 +51,12 @@
                   route.path === item.path || route.path === item.path,
               }"
             />
-            <p v-show="isOpen" class="text-lg  transition-all duration-200 whitespace-nowrap">
+            <p
+              v-show="isOpen"
+              class="text-lg transition-all duration-200 whitespace-nowrap"
+            >
               {{ item.name }}
             </p>
-      
           </router-link>
         </li>
       </ul>
