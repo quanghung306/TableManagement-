@@ -1,5 +1,5 @@
 @import "tailwindcss";
 @import 'primeicons/primeicons.css';
 @theme {
-  --font-serif: "Times New Roman", "sans-serif"; 
+  --font-serif: "Inter", "sans-serif"; 
 }
