@@ -51,9 +51,10 @@
                   route.path === item.path || route.path === item.path,
               }"
             />
-            <p v-show="isOpen" class="text-lg transition-all duration-1000">
+            <p v-show="isOpen" class="text-lg  transition-all duration-200 whitespace-nowrap">
               {{ item.name }}
             </p>
+      
           </router-link>
         </li>
       </ul>
