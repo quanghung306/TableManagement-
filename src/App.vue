@@ -12,8 +12,8 @@
 </template>
 
 <script setup>
-import NavbarForm from "./components/layout/NavbarForm.vue";
-import SideBarForm from "./components/layout/SideBarForm.vue";
+import NavbarForm from "./components/layout/Navbar.vue";
+import SideBarForm from "./components/layout/SideBar.vue";
 import { useAuthStore } from "./stores/authStore";
 const authStore = useAuthStore();
 </script>

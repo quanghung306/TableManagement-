@@ -47,13 +47,13 @@
               class="pi pi-users transition-all duration-200"
               style="font-size: 1.5rem"
               :class="{
-                'text-black scale-125':
+                'text-black scale-100':
                   route.path === item.path || route.path === item.path,
               }"
             />
-            <span v-if="isOpen" class="text-lg transition-all duration-200">
+            <p v-show="isOpen" class="text-lg transition-all duration-1000">
               {{ item.name }}
-            </span>
+            </p>
           </router-link>
         </li>
       </ul>
@@ -71,7 +71,7 @@ const isOpen = ref(true);
 
 const menuItems = [
   { name: "Users Management", icon: "dashboard", path: "/dashboard" },
-  { name: "Product Management", icon: "Product", path: "/Product" },
+  { name: "Product Management", icon: "Product", path: "/product" },
 ];
 
 // Toggle sidebar
