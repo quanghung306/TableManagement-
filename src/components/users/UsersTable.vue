@@ -1,8 +1,7 @@
 <template>
-<div class="bg-gray-50 font-serif ">
-    <div class="bg-white p-6 rounded-lg shadow-lg ">
-      <div class="flex justify-between items-center 
-      mb-6">
+  <div class="bg-gray-50 font-serif">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <div class="flex justify-between items-center mb-6">
         <div class="flex space-x-4">
           <SearchInput />
         </div>
@@ -18,69 +17,52 @@
             @click="openAddDialog"
             class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer"
           >
-          <i class=" pi pi-user-plus" style="font-size: 1rem"></i>
-          
+            <i class="pi pi-user-plus" style="font-size: 1rem"></i>
           </button>
         </div>
       </div>
 
       <div class="overflow-auto">
-        <table class="w-full bg-white">
+        <table class="w-full bg-white table-auto">
           <thead>
             <tr>
-              <th class="py-2 pr-2 text-left">
+              <th class="pl-3 pt-2 text-left">
                 <input
                   type="checkbox"
                   @change="toggleSelectAll"
                   :checked="isAllSelected"
-                  class="cursor-pointer"
+                  class="cursor-pointer w-4 h-4"
                 />
               </th>
               <th
                 v-for="column in columns"
                 :key="column.key"
-                class="py-2 text-left text-2xl text-gray-800 cursor-pointer"
+                class="  text-left text-2xl text-gray-800 cursor-pointer"
                 @click="handleColumnSort(column.key)"
               >
                 {{ column.key }}
-                <span class=" inline-flex items-center ">
-                  <template v-if="sortBy === column.key">
-                    <!-- <i class="pi pi-sort" style="font-size: 14px" ></i> -->
-                    <svg
-                      class="w-4 h-4 transition-transform duration-300"
-                      :class="sortOrder === 'asc' ? 'rotate-0' : 'rotate-180'"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="m8 15 4 4 4-4 m0-6-4-4-4 4"
-                      />
-                    </svg>
-                  </template>
-                  <template v-else>
-                    <!-- <i class="pi pi-sort" style="font-size: 14px"></i> -->
-                    <svg
-                      class="w-4 h-4 text-gray-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="m8 15 4 4 4-4 m0-6-4-4-4 4"
-                      />
-                    </svg>
-                  </template>
+                <span class="inline-flex items-center">
+                  <svg
+                    class="w-4 h-4 transition-all duration-300"
+                    :class="{
+                      'rotate-0': sortBy === column.key && sortOrder === 'asc',
+                      'rotate-180':
+                        sortBy === column.key && sortOrder === 'desc',
+                      'opacity-100': !sortBy || sortBy === column.key, 
+                      'opacity-0 invisible': sortBy && sortBy !== column.key, 
+                    }"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
                 </span>
               </th>
             </tr>
@@ -89,14 +71,14 @@
             <tr
               v-for="user in sortedUsers"
               :key="user.id"
-              class="border-t hover:bg-gray-100 transition duration-150 ease-in-out"
+              class="border-t border-gray-300 hover:bg-gray-100 transition duration-150 ease-in-out"
             >
-              <td class="py-4 items-center">
+              <td class="pl-3 pt-1.5 items-center">
                 <input
                   type="checkbox"
                   :value="user.id"
                   v-model="selectedUsers"
-                  class="cursor-pointer"
+                  class="cursor-pointer w-4 h-4"
                 />
               </td>
               <td
@@ -127,15 +109,13 @@
                   @click="openEditDialog(user)"
                   class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer"
                 >
-                <i class=" pi pi-pencil" style="font-size: 1rem"></i>
-                
+                  <i class="pi pi-pencil" style="font-size: 1rem"></i>
                 </button>
                 <button
                   @click="userStore.deleteUser(user.id)"
                   class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md shadow-md transition duration-150 ease-in-out ml-2 cursor-pointer"
                 >
-                <i class=" pi pi-trash" style="font-size: 1rem"></i>
-                
+                  <i class="pi pi-trash" style="font-size: 1rem"></i>
                 </button>
               </td>
             </tr>
