@@ -51,6 +51,15 @@
                   route.path === item.path || route.path === item.path,
               }"
             />
+            <i
+              v-if="item.name === 'Product Management'"
+              class="pi pi-box transition-all duration-200"
+              style="font-size: 1.5rem"
+              :class="{
+                'text-black scale-100':
+                  route.path === item.path || route.path === item.path,
+              }"
+            />
             <p
               v-show="isOpen"
               class="text-lg transition-all duration-200 whitespace-nowrap"
@@ -73,8 +82,8 @@ const route = useRoute();
 const isOpen = ref(true);
 
 const menuItems = [
-  { name: "Users Management", icon: "dashboard", path: "/dashboard" },
-  { name: "Product Management", icon: "Product", path: "/product" },
+  { name: "Users Management", path: "/dashboard" },
+  { name: "Product Management", path: "/product" },
 ];
 
 // Toggle sidebar

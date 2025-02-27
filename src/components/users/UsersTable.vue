@@ -22,10 +22,10 @@
         </div>
       </div>
       <div class="overflow-auto">
-        <table class="w-full bg-white">
+        <table class="w-full bg-white table-auto">
           <thead>
             <tr>
-              <th class="bg-blue-500 pl-3 pt-2 text-left">
+              <th class="bg-blue-500 pl-3 pt-2 text-left w-12">
                 <input
                   type="checkbox"
                   @change="toggleSelectAll"
@@ -36,11 +36,11 @@
               <th
                 v-for="column in columns"
                 :key="column.key"
-                class="bg-blue-500 text-left text-xl text-white group cursor-pointer"
+                class="bg-blue-500 p-1.5 text-lg text-white group cursor-pointer w-[180px]"
                 @click="handleColumnSort(column.key)"
               >
-                {{ column.key }}
-                <span class="inline-flex items-center text-black-800">
+                <div class="flex items-center">
+                  {{ column.key }}
                   <svg
                     class="w-4 h-4 transition-all"
                     :class="{
@@ -48,7 +48,7 @@
                       'rotate-180':
                         sortBy === column.key && sortOrder === 'desc',
                       'opacity-100 visible': sortBy === column.key,
-                      'opacity-0 invisible group-hover:opacity-100 group-hover:visible':
+                      'opacity-0 group-hover:opacity-100 group-hover:visible':
                         sortBy !== column.key,
                     }"
                     xmlns="http://www.w3.org/2000/svg"
@@ -63,9 +63,8 @@
                       d="m19.5 8.25-7.5 7.5-7.5-7.5"
                     />
                   </svg>
-                </span>
+                </div>
               </th>
-
               <th class="bg-blue-500" />
             </tr>
           </thead>
@@ -86,7 +85,7 @@
               <td
                 v-for="column in columns"
                 :key="column.key"
-                class="py-4 items-center"
+                class="py-4 px-2 items-center"
               >
                 <div v-if="column.key === 'Name'" class="flex items-center">
                   <img
@@ -124,31 +123,6 @@
               </td>
             </tr>
           </tbody>
-          <!-- <tbody>
-      <tr v-for="user in paginatedUsers" :key="user.id" class="border-b border-gray-300 bg-white hover:bg-gray-100 transition duration-150 ease-in-out">
-        <td class="pl-3 pt-1.5 items-center">
-          <input type="checkbox" :value="user.id" v-model="selectedUsers" class="cursor-pointer w-4 h-4" />
-        </td>
-        <td v-for="column in columns" :key="column.key" class="py-4 items-center">
-          <div v-if="column.key === 'Name'" class="flex items-center">
-            <img :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`" alt="User Avatar" class="h-10 w-10 rounded-full mr-2" />
-            <span>{{ user.Name }}</span>
-          </div>
-          <span v-else-if="column.key === 'Status'" :class="getStatusClass(user.Status)" class="px-2 py-1 inline-flex text-1xl leading-5 font-bold rounded-full">
-            {{ user.Status }}
-          </span>
-          <span v-else>{{ user[column.key] }}</span>
-        </td>
-        <td class="text-right">
-          <button @click="openEditDialog(user)" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer">
-            <i class="pi pi-pencil" style="font-size: 1rem"></i>
-          </button>
-          <button @click="userStore.deleteUser(user.id)" class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md shadow-md transition duration-150 ease-in-out ml-2 cursor-pointer">
-            <i class="pi pi-trash" style="font-size: 1rem"></i>
-          </button>
-        </td>
-      </tr>
-    </tbody> -->
         </table>
       </div>
       <div class="flex justify-center mt-4">
@@ -256,3 +230,4 @@ const getStatusClass = (status) => {
   }
 };
 </script>
+

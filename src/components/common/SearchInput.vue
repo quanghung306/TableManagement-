@@ -30,7 +30,7 @@
       <button
         type="submit"
         @click="handleSearch"
-        class="absolute end-2.1  bg-blue-700 rounded-lg text-sm text-white px-5 py-2.5 ml-2 mt-0.4 hover:bg-blue-800 cursor-pointer"
+        class="absolute end-2.1  bg-blue-700 rounded-lg text-sm text-white px-2 py-2.5 ml-2 mt-0.4 hover:bg-blue-800 cursor-pointer"
       >
       <i class=" pi pi-search" ></i>
       </button>
