@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref(null);
@@ -15,35 +17,56 @@ export const useAuthStore = defineStore("auth", () => {
   checkAuth();
 
   const isAuthenticated = computed(() => !!user.value);
-
-  const login = (formData) => {
+  const register = async (formData) => {
     isLoading.value = true;
-    setTimeout(() => {
-      if (formData.username === "admin" && formData.password === "123456") {
-        user.value = formData;
-        localStorage.setItem("user", JSON.stringify(formData));
-        errorMessage.value = "";
-        router.push("/dashboard");
+    errorMessage.value = "";
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+  
+    if (formData.username || formData.password) {
+     
+      const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+      const isUserExist = registeredUsers.some(user => 
+        user.username === formData.username 
+      );
+      if (isUserExist) {
+        errorMessage.value = "Username đã tồn tại!";
       } else {
-        errorMessage.value = "Sai username hoặc password!";
+       
+        registeredUsers.push(formData);
+        localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers));
+  
+        alert("Register Account Success! Please login.");
+        router.push("/login");
       }
-      isLoading.value = false;
-    }, 1500);
+    } else {
+      errorMessage.value = "Vui lòng nhập đầy đủ thông tin!";
+    }
+    isLoading.value = false;
   };
-  const register = (formData) => {
+  
+  
+  const login = async (formData) => {
     isLoading.value = true;
-    setTimeout(() => {
-      if (!formData.username || !formData.email || !formData.password) {
-        errorMessage.value = "Vui lòng điền đầy đủ thông tin!";
-      } else {
-        user.value = formData;
-        localStorage.setItem("user", JSON.stringify(formData));
-        errorMessage.value = "";
-        router.push("/dashboard");
-      }
-      isLoading.value = false;
-    }, 1500);
+    errorMessage.value = "";
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+  
+    const registeredUsers = JSON.parse(localStorage.getItem("registeredUsers")) || [];
+  
+    const userFound = registeredUsers.find(user => 
+      user.username === formData.username && user.password === formData.password
+    );
+  
+    if (userFound) {
+      user.value = userFound;
+      localStorage.setItem("user", JSON.stringify(userFound)); 
+      alert("Login Success! ");
+      router.push("/dashboard");
+    } else {
+      errorMessage.value = "Sai username hoặc password!";
+    }
+    isLoading.value = false;
   };
+  
 
   const logout = () => {
     user.value = null;
