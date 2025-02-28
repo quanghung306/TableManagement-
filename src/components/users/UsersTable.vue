@@ -125,7 +125,7 @@
           </tbody>
         </table>
       </div>
-      <div class="flex justify-center mt-4">
+      <div class="flex justify-end  ">
         <Pagination />
       </div>
     </div>
@@ -189,17 +189,16 @@ function toggleSelectAll(event) {
 
 const deleteSelectedUsers = () => {
   if (selectedUsers.value.length === 0) {
-    Swal.fire("Không có user nào được chọn!", "", "info");
+    Swal.fire("No users have been selected!", "", "info");
     return;
   }
-
   Swal.fire({
     title: "Bạn có chắc muốn xóa các user này?",
-    text: `Sẽ xóa ${selectedUsers.value.length} user. Hành động này không thể hoàn tác!`,
+    text: `Delete ${selectedUsers.value.length} user. This action cannot be undone!`,
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Xóa ngay!",
-    cancelButtonText: "Hủy",
+    confirmButtonText: "Delete!",
+    cancelButtonText: "Cancel",
     confirmButtonColor: "#d33",
     cancelButtonColor: "#3085d6",
   }).then((result) => {
@@ -208,7 +207,7 @@ const deleteSelectedUsers = () => {
         userStore.deleteUser(userId);
       });
       selectedUsers.value = [];
-      Swal.fire("Đã xóa!", "Các user đã bị xóa thành công.", "success");
+      Swal.fire("Deleted!", "", "success");
     }
   });
 };

@@ -1,14 +1,14 @@
 <template>
-  <div class="flex justify-center items-center space-x-2 mt-4">
+  <div class="flex justify-center items-center space-x-2 mt-2 mb-2 mr-1">
     <!-- Slot cho nút Prev -->
     <slot name="prev" :disabled="currentPage === 1" :goToPrevPage="goToPrevPage">
       <button
         @click="goToPrevPage"
         :disabled="currentPage === 1"
-        class="px-3 py-1 rounded-md transition-all duration-300 ease-in-out 
+        class="px-2.5 py-1.5 rounded-md transition-all duration-300 ease-in-out 
               bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed scale-100 hover:scale-110"
       >
-        <i class="pi pi-caret-left text-lg"></i>
+        <i class="pi pi-caret-left text-lg "></i>
       </button>
     </slot>
 
@@ -34,7 +34,7 @@
       <button
         @click="goToNextPage"
         :disabled="currentPage === totalPages"
-        class="px-3 py-1 rounded-md transition-all duration-300 ease-in-out 
+        class="px-2.5 py-1.5 rounded-md transition-all duration-300 ease-in-out 
         bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed scale-100 hover:scale-110"
       >
         <i class="pi pi-caret-right text-lg"></i>
