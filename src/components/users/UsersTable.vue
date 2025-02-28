@@ -99,7 +99,7 @@
                 <span
                   v-else-if="column.key === 'Status'"
                   :class="getStatusClass(user.Status)"
-                  class="px-2 py-1 inline-flex text-1xl leading-5 font-bold rounded-full"
+                  class="px-2 py-1 inline-flex  leading-5 font-bold rounded-full"
                 >
                   {{ user.Status }}
                 </span>

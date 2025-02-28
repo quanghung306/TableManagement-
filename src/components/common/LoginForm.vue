@@ -71,7 +71,7 @@
     <p class="text-center text-gray-700 mt-4">
       Don't have an account?
       <router-link to="/register" class="text-blue-700 hover:underline">
-        Sign Up
+        Register
       </router-link>
     </p>
   </div>

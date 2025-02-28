@@ -1,10 +1,12 @@
 <template>
   <div
-    class="bg-gray-50 text-gray-800 h-screen transition-all duration-300 flex flex-col font-serif "
+    class="bg-gray-50 text-gray-800 h-screen transition-all duration-300 flex flex-col font-serif"
     :style="{ width: isOpen ? '16rem' : '4rem' }"
   >
     <!-- Toggle Button -->
-    <div class="p-4 flex items-center bg-gray-100 border-b border-gray-300 h-16">
+    <div
+      class="p-4 flex items-center bg-gray-100 border-b border-gray-300 h-16"
+    >
       <div class="flex items-center gap-3 flex-1">
         <i class="pi pi-microsoft"></i>
         <h1 v-if="isOpen" class="text-2xl font-bold text-gray-800">
@@ -32,12 +34,12 @@
     </div>
 
     <!-- Menu Items -->
-    <nav class="flex-1 ">
+    <nav class="flex-1">
       <ul>
         <li v-for="item in menuItems" :key="item.name">
           <router-link
             :to="item.path"
-            class=" flex items-center px-4 py-3 space-x-3 hover:bg-gray-300 transition-colors duration-200   "
+            class="flex items-center px-4 py-3 space-x-3 hover:bg-gray-300 transition-colors duration-200"
           >
             <i
               v-if="item.name === 'Users Management'"
@@ -59,7 +61,7 @@
             />
             <p
               v-show="isOpen"
-              class="text-lg transition-all duration-200 whitespace-nowrap "
+              class="text-lg transition-all duration-200 whitespace-nowrap"
             >
               {{ item.name }}
             </p>
@@ -73,11 +75,9 @@
 <script setup>
 import { ref } from "vue";
 import { useRoute } from "vue-router";
-
 const route = useRoute();
 // Sidebar state
 const isOpen = ref(true);
-
 const menuItems = [
   { name: "Users Management", path: "/dashboard" },
   { name: "Product Management", path: "/product" },
@@ -88,16 +88,13 @@ const toggleSidebar = () => {
   isOpen.value = !isOpen.value;
 };
 </script>
-
 <style scoped>
 button svg {
   transition: transform 0.3s ease;
 }
-
 .router-link-active {
   background-color: #c6c7c96b;
   font-weight: bold;
- 
   color: #334155;
 }
 </style>

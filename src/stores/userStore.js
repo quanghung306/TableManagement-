@@ -3,7 +3,6 @@ import { ref, computed } from "vue";
 import { users as userData } from "../data/users";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
-
 export const useUserStore = defineStore("user", () => {
   // State
   const users = ref([...userData]);

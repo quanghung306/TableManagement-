@@ -11,7 +11,7 @@ const routes = [
   { 
     path: "/register", 
     component: () => import("../views/RegisterView.vue"),
-    meta: { guestOnly: true }, //  chưa đăng nhập
+    meta: { guestOnly: true },
   },
   {
     path: "/dashboard",
