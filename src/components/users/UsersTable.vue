@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-50 font-serif">
-    <div class="bg-white p-6 rounded-lg shadow-lg">
+    <div class="bg-white  rounded-lg shadow-lg">
       <div class="flex justify-between items-center mb-6">
         <div class="flex space-x-2">
           <SearchInput />
@@ -65,7 +65,7 @@
                   </svg>
                 </div>
               </th>
-              <th class="bg-blue-500" />
+              <th class="bg-blue-500 text-lg text-white text-center  w-20" > Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -108,18 +108,18 @@
                 </span>
               </td>
               <td class="text-right">
-                <button
-                  @click="openEditDialog(user)"
-                  class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer"
+                <!-- <button
+                @click="userStore.deleteUser(user.id)"
+                class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md shadow-md transition duration-150 ease-in-out ml-2 cursor-pointer  "
                 >
-                  <i class="pi pi-pencil" style="font-size: 1rem"></i>
-                </button>
-                <button
-                  @click="userStore.deleteUser(user.id)"
-                  class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md shadow-md transition duration-150 ease-in-out ml-2 cursor-pointer"
-                >
-                  <i class="pi pi-trash" style="font-size: 1rem"></i>
-                </button>
+                <i class="pi pi-trash" style="font-size: 1rem"></i>
+              </button> -->
+              <button
+                @click="openEditDialog(user)"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer m-5"
+              >
+                <i class="pi pi-pencil" style="font-size: 1rem"></i>
+              </button>
               </td>
             </tr>
           </tbody>
