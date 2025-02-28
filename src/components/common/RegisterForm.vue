@@ -14,34 +14,31 @@
         type="text"
         name="username"
         label="Username"
+        placeholder="Your username"
         validation="required"
-        validation-message="Vui lòng nhập username"
       />
       <FormKit
         type="password"
         name="password"
-        label="Password "
-        validation="required|length:6"
-        validation-messages="{
-              required: 'Vui lòng nhập mật khẩu',
-              length: 'Mật khẩu ít nhất 6 ký tự'
-            }"
+        label="Password"
+        validation="required|length:6|matches:/[^a-zA-Z]/"
+        :validation-messages="{
+          matches: 'Please include at least one symbol',
+        }"
+        placeholder="Your password"
+        
       />
-
       <FormKit
         type="password"
-        name="confirmPassword"
-        label="Confirm Password"
+        name="password_confirm"
+        label="Confirm password"
+        placeholder="Confirm password"
         validation="required|confirm"
-        validation-messages="{
-            required: 'Vui lòng nhập lại mật khẩu',
-             confirm: 'Mật khẩu không khớp'
-        }"
       />
       <FormKit
         type="submit"
         :disabled="isLoading"
-        :label="isLoading ? 'Logging in...' : 'Login'"
+        :label="isLoading ? 'Register in...' : 'Register'"
         :sections-schema="{
           outer: { $el: 'div', attrs: { class: 'w-full' } },
           input: {
@@ -55,13 +52,13 @@
       />
     </FormKit>
 
-    <p v-if="authStore.errorMessage" class="text-red-500 text-sm mt-2">
+    <p v-if="authStore.errorMessage" class="text-red-500 text-sm mt-2 text-center">
       {{ authStore.errorMessage }}
     </p>
 
-    <p class="mt-4 text-sm text-center">
+    <p class="text-center text-gray-700 mt-4">
       Already have an account?
-      <RouterLink to="/login" class="text-blue-500 hover:underline"
+      <RouterLink to="/login" class="text-blue-700 hover:underline"
         >Login</RouterLink
       >
     </p>
@@ -69,12 +66,13 @@
 </template>
   
   <script setup>
+import { storeToRefs } from "pinia";
 import { useAuthStore } from "../../stores/authStore";
 import { useRouter } from "vue-router";
 
 const authStore = useAuthStore();
 const router = useRouter();
-
+const { isLoading } = storeToRefs(authStore);
 const handleRegister = (formData) => {
   authStore.register(formData);
 };
