@@ -1,23 +1,23 @@
 <template>
   <div class="bg-gray-50 font-serif">
     <div class="bg-white  rounded-lg shadow-lg">
-      <div class="flex justify-between items-center mb-6">
+      <div class=" flex justify-between items-center mb-6 ml-2 ">
         <div class="flex space-x-2">
           <SearchInput />
         </div>
-        <div class="flex space-x-2">
+        <div class="flex space-x-2 mr-4 mt-2 " >
           <button
             v-if="isAllSelected"
             @click="deleteSelectedUsers"
-            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer"
+            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer "
           >
             Delete Selected
           </button>
           <button
             @click="openAddDialog"
-            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer  "
           >
-            <i class="pi pi-user-plus" style="font-size: 1rem"></i>
+            <i class="pi pi-user-plus " style="font-size: 1rem"></i>
           </button>
         </div>
       </div>

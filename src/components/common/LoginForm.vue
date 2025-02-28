@@ -70,7 +70,7 @@
     </transition>
     <p class="text-center text-gray-700 mt-4">
       Don't have an account?
-      <router-link to="/signup" class="text-blue-700 hover:underline">
+      <router-link to="/register" class="text-blue-700 hover:underline">
         Sign Up
       </router-link>
     </p>

@@ -1,10 +1,10 @@
 <template>
   <div
-    class="bg-gray-50 text-gray-800 h-screen transition-all duration-300 flex flex-col font-serif"
+    class="bg-gray-50 text-gray-800 h-screen transition-all duration-300 flex flex-col font-serif "
     :style="{ width: isOpen ? '16rem' : '4rem' }"
   >
     <!-- Toggle Button -->
-    <div class="p-4 flex items-center bg-gray-100 border-b border-gray-300">
+    <div class="p-4 flex items-center bg-gray-100 border-b border-gray-300 h-16">
       <div class="flex items-center gap-3 flex-1">
         <i class="pi pi-microsoft"></i>
         <h1 v-if="isOpen" class="text-2xl font-bold text-gray-800">
@@ -18,7 +18,7 @@
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="w-6 h-6 text-gray-800 cursor-pointer transition-transform ml-2"
+          class="w-6 h-6 text-gray-800 cursor-pointer duration-300 transition-transform ml-3"
           :class="{ 'rotate-180': isOpen }"
         >
           <path
@@ -32,15 +32,12 @@
     </div>
 
     <!-- Menu Items -->
-    <nav class="flex-1 mt-4">
+    <nav class="flex-1 ">
       <ul>
         <li v-for="item in menuItems" :key="item.name">
           <router-link
             :to="item.path"
-            class="flex items-center px-4 py-3 space-x-3 hover:bg-gray-200 transition-colors duration-200 text-gray-700 group"
-            :class="{
-              'bg-gray-300 font-bold text-black': route.path === item.path,
-            }"
+            class=" flex items-center px-4 py-3 space-x-3 hover:bg-gray-300 transition-colors duration-200   "
           >
             <i
               v-if="item.name === 'Users Management'"
@@ -62,7 +59,7 @@
             />
             <p
               v-show="isOpen"
-              class="text-lg transition-all duration-200 whitespace-nowrap"
+              class="text-lg transition-all duration-200 whitespace-nowrap "
             >
               {{ item.name }}
             </p>
@@ -98,8 +95,9 @@ button svg {
 }
 
 .router-link-active {
-  background-color: #f1f5f9;
+  background-color: #c6c7c96b;
   font-weight: bold;
+ 
   color: #334155;
 }
 </style>

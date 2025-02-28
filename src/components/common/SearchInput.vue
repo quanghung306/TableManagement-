@@ -1,5 +1,5 @@
 <template>
-    <div class="relative w-64">
+    <div class=" relative w-64">
       <input
         v-model="localQuery"
         type="text"
@@ -30,9 +30,9 @@
       <button
         type="submit"
         @click="handleSearch"
-        class="absolute end-2.1  bg-blue-700 rounded-lg text-sm text-white px-2 py-2.5 ml-2 mt-0.4 hover:bg-blue-800 cursor-pointer"
+        class="absolute end-2.1 rounded-lg text-sm  ml-2 mt-0.5  cursor-pointer bg-blue-500 hover:bg-blue-600 text-white px-3 py-2  "
       >
-      <i class=" pi pi-search" ></i>
+      <i class="pi pi-search  " style="font-size: 1rem; font-weight: bold;" ></i>
       </button>
     </div>
   </template>

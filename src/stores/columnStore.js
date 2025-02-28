@@ -10,7 +10,6 @@ export const useColumnStore = defineStore("column", {
       { key: "Status"},
       { key: "Role" },
       { key: "Email",inputType: TextInput },
-     
     ],
   }),
 });
