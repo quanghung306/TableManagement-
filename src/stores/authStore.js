@@ -30,6 +30,20 @@ export const useAuthStore = defineStore("auth", () => {
       isLoading.value = false;
     }, 1500);
   };
+  const register = (formData) => {
+    isLoading.value = true;
+    setTimeout(() => {
+      if (!formData.username || !formData.email || !formData.password) {
+        errorMessage.value = "Vui lòng điền đầy đủ thông tin!";
+      } else {
+        user.value = formData;
+        localStorage.setItem("user", JSON.stringify(formData));
+        errorMessage.value = "";
+        router.push("/dashboard");
+      }
+      isLoading.value = false;
+    }, 1500);
+  };
 
   const logout = () => {
     user.value = null;
@@ -41,6 +55,7 @@ export const useAuthStore = defineStore("auth", () => {
     isAuthenticated,
     login,
     logout,
+    register,
     checkAuth,
     isLoading,
     errorMessage,

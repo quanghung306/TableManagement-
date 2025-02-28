@@ -8,6 +8,11 @@ const routes = [
     component: () => import("../views/LoginView.vue"),
     meta: { guestOnly: true }, //  chưa đăng nhập
   },
+  { 
+    path: "/register", 
+    component: () => import("../views/RegisterView.vue"),
+    meta: { guestOnly: true }, //  chưa đăng nhập
+  },
   {
     path: "/dashboard",
     component: () => import("../views/DashboardView.vue"),
