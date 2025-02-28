@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-50 font-serif">
+  <div class="bg-gray-50 c">
     <div class="bg-white  rounded-lg shadow-lg">
       <div class=" flex justify-between items-center mb-6 ml-2 ">
         <div class="flex space-x-2">
@@ -146,7 +146,7 @@ import SearchInput from "../common/SearchInput.vue";
 import EditUser from "./EditUser.vue";
 import { useColumnStore } from "../../stores/columnStore";
 import { useUserStore } from "../../stores/userStore";
-
+import Swal from "sweetalert2";
 import Pagination from "../common/Pagination.vue";
 import { usePaginationStore } from "../../stores/paginationStore";
 
@@ -187,13 +187,31 @@ function toggleSelectAll(event) {
   }
 }
 
-function deleteSelectedUsers() {
-  selectedUsers.value.forEach((userId) => {
-    userStore.deleteUser(userId);
-  });
-  selectedUsers.value = [];
-}
+const deleteSelectedUsers = () => {
+  if (selectedUsers.value.length === 0) {
+    Swal.fire("Không có user nào được chọn!", "", "info");
+    return;
+  }
 
+  Swal.fire({
+    title: "Bạn có chắc muốn xóa các user này?",
+    text: `Sẽ xóa ${selectedUsers.value.length} user. Hành động này không thể hoàn tác!`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Xóa ngay!",
+    cancelButtonText: "Hủy",
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      selectedUsers.value.forEach((userId) => {
+        userStore.deleteUser(userId);
+      });
+      selectedUsers.value = [];
+      Swal.fire("Đã xóa!", "Các user đã bị xóa thành công.", "success");
+    }
+  });
+};
 function openEditDialog(user) {
   selectedUser.value = { ...user };
   isDialogOpen.value = true;
