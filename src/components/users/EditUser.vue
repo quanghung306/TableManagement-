@@ -76,11 +76,11 @@ const userStore = useUserStore();
 
 const editableUser = ref({});
 const columns = ref([
-{ key: "Name",inputType: TextInput },
-      { key: "Position",inputType: TextInput },
-      { key: "Status"},
-      { key: "Gender" },
-      { key: "Email",inputType: TextInput },
+  { key: "Name", inputType: TextInput },
+  { key: "Position", inputType: TextInput },
+  { key: "Status" },
+  { key: "Gender" },
+  { key: "Email", inputType: TextInput },
 ]);
 
 // Cập nhật editableUser khi modelValue thay đổi
