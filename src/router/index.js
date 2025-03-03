@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "../stores/authStore";
 
 const routes = [
-  { path: "/", redirect: "/dashboard" },
   { 
     path: "/login", 
     component: () => import("../views/LoginView.vue"),
@@ -38,7 +37,7 @@ router.beforeEach((to) => {
   }
   // nếu đã đăng nhập thì không thể về trang login đc
   if (to.meta.guestOnly && authStore.isAuthenticated) {
-    return "/dashboard";
+    return "/users";
   }
 });
 

@@ -1,113 +1,114 @@
 <template>
-    <div class="bg-white rounded-lg m-2  ">
-      <div class=" flex justify-between items-center mb-6 ml-2 ">
-        <div class="flex space-x-2">
-          <SearchInput />
-        </div>
-        <div class="flex space-x-2 mr-4 mt-2 " >
-          <button
-            v-if="isAllSelected"
-            @click="deleteSelectedUsers"
-            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer "
-          >
-            Delete Selected
-          </button>
-          <button
-            @click="openAddDialog"
-            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer  "
-          >
-            <i class="pi pi-user-plus " style="font-size: 1rem"></i>
-          </button>
-        </div>
+  <div class="bg-white rounded-lg m-2">
+    <div class="flex justify-between items-center mb-6 ml-2">
+      <div class="flex space-x-2">
+        <SearchInput />
       </div>
-      <div class="overflow-auto">
-        <table class="w-full bg-white table-auto border-gray-300 border-2">
-          <thead>
-            <tr>
-              <th class="bg-blue-500 pl-3 pt-2 text-left w-12">
-                <input
-                  type="checkbox"
-                  @change="toggleSelectAll"
-                  :checked="isAllSelected"
-                  class="cursor-pointer w-4 h-4"
-                />
-              </th>
-              <th
-                v-for="column in columns"
-                :key="column.key"
-                class="bg-blue-500 p-1.5 text-lg text-white group cursor-pointer w-[180px]"
-                @click="handleColumnSort(column.key)"
-              >
-                <div class="flex items-center">
-                  {{ column.key }}
-                  <svg
-                    class="w-4 h-4 transition-all"
-                    :class="{
-                      'rotate-0': sortBy === column.key && sortOrder === 'asc',
-                      'rotate-180':
-                        sortBy === column.key && sortOrder === 'desc',
-                      'opacity-100 visible': sortBy === column.key,
-                      'opacity-0 group-hover:opacity-100 group-hover:visible':
-                        sortBy !== column.key,
-                    }"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="2"
-                    stroke="currentColor"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                    />
-                  </svg>
-                </div>
-              </th>
-              <th class="bg-blue-500 text-lg text-white text-center  w-20" > Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="user in paginatedUsers"
-              :key="user.id"
-              class="border-b border-gray-300 bg-white hover:bg-gray-100 transition duration-150 ease-in-out"
+      <div class="flex space-x-2 mr-4 mt-2">
+        <button
+          v-if="isAllSelected"
+          @click="deleteSelectedUsers"
+          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer"
+        >
+          Delete Selected
+        </button>
+        <button
+          @click="openAddDialog"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer"
+        >
+          <i class="pi pi-user-plus" style="font-size: 1rem"></i>
+        </button>
+      </div>
+    </div>
+    <div class="overflow-auto">
+      <table class="w-full bg-white table-auto border-gray-300 border-2">
+        <thead>
+          <tr>
+            <th class="bg-blue-500 pl-3 pt-2 text-left w-12">
+              <input
+                type="checkbox"
+                @change="toggleSelectAll"
+                :checked="isAllSelected"
+                class="cursor-pointer w-4 h-4"
+              />
+            </th>
+            <th
+              v-for="column in columns"
+              :key="column.key"
+              class="bg-blue-500 p-1.5 text-lg text-white group cursor-pointer w-[180px]"
+              @click="handleColumnSort(column.key)"
             >
-              <td class="pl-3 pt-1.5 items-center">
-                <input
-                  type="checkbox"
-                  :value="user.id"
-                  v-model="selectedUsers"
-                  class="cursor-pointer w-4 h-4"
-                />
-              </td>
-              <td
-                v-for="column in columns"
-                :key="column.key"
-                class="py-4 px-2 items-center"
-              >
-                <div v-if="column.key === 'Name'" class="flex items-center">
-                  <img
-                    :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`"
-                    alt="User Avatar"
-                    class="h-10 w-10 rounded-full mr-2"
-                  />
-                  <!-- :src="user.Avatar || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`"  -->
-                  <span>{{ user.Name }}</span>
-                </div>
-                <span
-                  v-else-if="column.key === 'Status'"
-                  :class="getStatusClass(user.Status)"
-                  class="px-2 py-1 inline-flex  leading-5 font-bold rounded-full"
+              <div class="flex items-center">
+                {{ column.key }}
+                <svg
+                  class="w-4 h-4 transition-all"
+                  :class="{
+                    'rotate-0': sortBy === column.key && sortOrder === 'asc',
+                    'rotate-180': sortBy === column.key && sortOrder === 'desc',
+                    'opacity-100 visible': sortBy === column.key,
+                    'opacity-0 group-hover:opacity-100 group-hover:visible':
+                      sortBy !== column.key,
+                  }"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
                 >
-                  {{ user.Status }}
-                </span>
-                <span v-else>
-                  {{ user[column.key] }}
-                </span>
-              </td>
-              <td class="text-right">
-                <!-- <button
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              </div>
+            </th>
+            <th class="bg-blue-500 text-lg text-white text-center w-20">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="user in paginatedUsers"
+            :key="user.id"
+            class="border-b border-gray-300 bg-white hover:bg-gray-100 transition duration-150 ease-in-out"
+          >
+            <td class="pl-3 pt-1.5 items-center">
+              <input
+                type="checkbox"
+                :value="user.id"
+                v-model="selectedUsers"
+                class="cursor-pointer w-4 h-4"
+              />
+            </td>
+            <td
+              v-for="column in columns"
+              :key="column.key"
+              class="py-4 px-2 items-center"
+            >
+              <div v-if="column.key === 'Name'" class="flex items-center">
+                <img
+                  :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`"
+                  alt="User Avatar"
+                  class="h-10 w-10 rounded-full mr-2"
+                />
+                <!-- :src="user.Avatar || `https://randomuser.me/api/portraits/men/${Math.floor(Math.random() * 100)}.jpg`"  -->
+                <span>{{ user.Name }}</span>
+              </div>
+              <span
+                v-else-if="column.key === 'Status'"
+                :class="getStatusClass(user.Status)"
+                class="px-2 py-1 inline-flex leading-5 font-bold rounded-full"
+              >
+                {{ user.Status }}
+              </span>
+              <span v-else>
+                {{ user[column.key] }}
+              </span>
+            </td>
+            <td class="text-right">
+              <!-- <button
                 @click="userStore.deleteUser(user.id)"
                 class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-md shadow-md transition duration-150 ease-in-out ml-2 cursor-pointer  "
                 >
@@ -119,22 +120,22 @@
               >
                 <i class="pi pi-pencil" style="font-size: 1rem"></i>
               </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="flex justify-end  ">
-        <Pagination />
-      </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <EditUser
-      v-if="isDialogOpen"
-      :modelValue="selectedUser"
-      :isOpen="isDialogOpen"
-      @save="handleSave"
-      @close="closeDialog"
-    />
+    <div class="flex justify-end">
+      <Pagination />
+    </div>
+  </div>
+  <EditUser
+    v-if="isDialogOpen"
+    :modelValue="selectedUser"
+    :isOpen="isDialogOpen"
+    @save="handleSave"
+    @close="closeDialog"
+  />
 </template>
 
 <script setup>
@@ -149,23 +150,21 @@ import { usePaginationStore } from "../../stores/paginationStore";
 
 const userStore = useUserStore();
 
-
 const paginationStore = usePaginationStore();
 const { currentPage, pageSize } = storeToRefs(paginationStore);
 
 const { sortedUsers, sortBy, sortOrder, toggleSort } = storeToRefs(userStore);
-
 
 const isDialogOpen = ref(false);
 const selectedUser = ref({});
 const selectedUsers = ref([]);
 
 const columns = ref([
-  { key: "Name", },
-  { key: "Position"},
-  { key: "Status"},
-  { key: "Gender"},
-  { key: "Email"},
+  { key: "Name" },
+  { key: "Position" },
+  { key: "Status" },
+  { key: "Gender" },
+  { key: "Email" },
 ]);
 
 const isAllSelected = computed(
