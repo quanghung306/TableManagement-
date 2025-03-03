@@ -142,24 +142,31 @@ import { ref, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import SearchInput from "../common/SearchInput.vue";
 import EditUser from "./EditUser.vue";
-import { useColumnStore } from "../../stores/columnUserStore";
 import { useUserStore } from "../../stores/userStore";
 import Swal from "sweetalert2";
 import Pagination from "../common/Pagination.vue";
 import { usePaginationStore } from "../../stores/paginationStore";
 
 const userStore = useUserStore();
-const columnStore = useColumnStore();
+
 
 const paginationStore = usePaginationStore();
 const { currentPage, pageSize } = storeToRefs(paginationStore);
 
 const { sortedUsers, sortBy, sortOrder, toggleSort } = storeToRefs(userStore);
-const { columns } = storeToRefs(columnStore);
+
 
 const isDialogOpen = ref(false);
 const selectedUser = ref({});
 const selectedUsers = ref([]);
+
+const columns = ref([
+  { key: "Name", },
+  { key: "Position"},
+  { key: "Status"},
+  { key: "Gender"},
+  { key: "Email"},
+]);
 
 const isAllSelected = computed(
   () => selectedUsers.value.length === sortedUsers.value.length
