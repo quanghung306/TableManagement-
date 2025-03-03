@@ -69,7 +69,6 @@ export const useAuthStore = defineStore("auth", () => {
   const logout = () => {
     user.value = null;
     localStorage.removeItem("user");
-    toast.info("Bạn đã đăng xuất!");
     router.push("/login");
   };
 
