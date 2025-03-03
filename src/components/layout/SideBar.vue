@@ -34,7 +34,7 @@
     </div>
 
     <!-- Menu Items -->
-    <nav class="flex-1">
+    <nav class="flex-1 shadow-xl shadow-gray-200">
       <ul>
         <li v-for="item in menuItems" :key="item.name">
           <router-link
@@ -79,7 +79,7 @@ const route = useRoute();
 // Sidebar state
 const isOpen = ref(true);
 const menuItems = [
-  { name: "Users Management", path: "/dashboard" },
+  { name: "Users Management", path: "/users" },
   { name: "Product Management", path: "/product" },
 ];
 

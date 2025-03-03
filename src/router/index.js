@@ -14,8 +14,8 @@ const routes = [
     meta: { guestOnly: true },
   },
   {
-    path: "/dashboard",
-    component: () => import("../views/DashboardView.vue"),
+    path: "/users",
+    component: () => import("../views/UsersView.vue"),
     meta: { requiresAuth: true }, // đã đăng nhập
   },
   {

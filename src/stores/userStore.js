@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed, onMounted } from "vue";
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
+
+import Swal from "sweetalert2";
 import axios from "axios";
 
 const API_URL = "https://660bb670ccda4cbc75dd7d2f.mockapi.io/users";
@@ -13,13 +13,21 @@ export const useUserStore = defineStore("user", () => {
   const sortOrder = ref("asc");
   const searchQuery = ref("");
 
-
   const fetchUsers = async () => {
     try {
+      Swal.fire({
+        title: "Loading...",
+        text: "Loading data, please wait!",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       const response = await axios.get(API_URL);
       user.value = response.data || [];
+      Swal.close();
     } catch (error) {
-      toast.error("Lỗi khi tải dữ liệu nhà sản xuất!");
+      Swal.fire("Error loading data!!", "", "error");
     }
   };
 
@@ -29,8 +37,8 @@ export const useUserStore = defineStore("user", () => {
   const sortedUsers = computed(() => {
     let list = user.value;
     if (searchQuery.value) {
-      list = list.filter((manufacturer) =>
-        manufacturer.Name.toLowerCase().includes(searchQuery.value.toLowerCase())
+      list = list.filter((user) =>
+        user.Name.toLowerCase().includes(searchQuery.value.toLowerCase())
       );
     }
     if (!sortBy.value) return list;
@@ -59,24 +67,30 @@ export const useUserStore = defineStore("user", () => {
   const saveUser = async (newUser) => {
     try {
       if (!newUser.Name || !newUser.Position) {
-        toast.error("Vui lòng nhập đầy đủ thông tin!");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please enter complete information!",
+        });
         return false;
       }
-  
+
       if (newUser.id) {
         await axios.put(`${API_URL}/${newUser.id}`, newUser);
-        user.value = user.value.map((m) =>
-          m.id === newUser.id ? newUser : m
-        );
-        toast.success("Update User Successfully!");
+        user.value = user.value.map((m) => (m.id === newUser.id ? newUser : m));
+        Swal.fire("Update User Successfully!", "", "success");
         return true;
       } else {
         const response = await axios.post(API_URL, newUser);
         user.value.push(response.data);
-        toast.success("Add New User Successfully!");
+        Swal.fire("Add New User Successfully!", "", "success");
       }
     } catch (error) {
-      toast.error("Cant save user!");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Cant save user!",
+      });
       return false;
     }
   };
@@ -85,9 +99,8 @@ export const useUserStore = defineStore("user", () => {
     try {
       await axios.delete(`${API_URL}/${id}`);
       user.value = user.value.filter((m) => m.id !== id);
-      toast.success("Delete Users Successfully!");
     } catch (error) {
-      toast.error("Error!");
+      console.log(error);
     }
   };
 
@@ -104,4 +117,3 @@ export const useUserStore = defineStore("user", () => {
     fetchUsers,
   };
 });
-
