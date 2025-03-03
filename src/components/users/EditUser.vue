@@ -10,12 +10,12 @@
         <div v-for="column in columns" :key="column.key" class="mb-4">
             <label class="block text-gray-700 capitalize">{{ column.key }}</label>
             <select
-              v-if="column.key === 'Role'"
+              v-if="column.key === 'Gender'"
               v-model="editableUser[column.key]"
               class="border p-2 rounded w-full mt-1"
             >
-              <option value="Admin">Admin</option>
-              <option value="Member">Member</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
             </select>
             <select
               v-else-if="column.key === 'Status'"
@@ -85,12 +85,13 @@ watch(
   { immediate: true }
 );
 
-function handleSubmit () {
-  const result = userStore.saveUser({ ...editableUser.value });
+async function handleSubmit() {
+  const result = await userStore.saveUser({ ...editableUser.value }); // Chờ kết quả
+  console.log("🚀 ~ handleSubmit ~ result:", result);
+  
   if (result !== false) {
-    close();
+    close(); // Chỉ đóng khi save thành công
   }
-  console.log("🚀 ~ handleSave ~ result:", result);
 }
 
 function close() {

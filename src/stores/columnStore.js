@@ -6,9 +6,9 @@ export const useColumnStore = defineStore("column", {
     columns: [
       // { key: "Avatar" ,inputType: TextInput},
       { key: "Name",inputType: TextInput },
-      { key: "Title",inputType: TextInput },
+      { key: "Position",inputType: TextInput },
       { key: "Status"},
-      { key: "Role" },
+      { key: "Gender" },
       { key: "Email",inputType: TextInput },
     ],
   }),
