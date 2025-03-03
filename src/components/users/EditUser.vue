@@ -55,7 +55,7 @@
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { useColumnStore } from "../../stores/columnStore";
+import { useColumnStore } from "../../stores/columnUserStore";
 import { useUserStore } from "../../stores/userStore";
 const props = defineProps({
   modelValue: {
