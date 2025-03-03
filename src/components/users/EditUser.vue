@@ -59,6 +59,7 @@
 import { ref, watch } from "vue";
 
 import { useUserStore } from "../../stores/userStore";
+import TextInput from "../common/TextInput.vue";
 const props = defineProps({
   modelValue: {
     type: Object,
@@ -75,11 +76,11 @@ const userStore = useUserStore();
 
 const editableUser = ref({});
 const columns = ref([
-  { key: "Name" },
-  { key: "Position" },
-  { key: "Status" },
-  { key: "Gender" },
-  { key: "Email" },
+{ key: "Name",inputType: TextInput },
+      { key: "Position",inputType: TextInput },
+      { key: "Status"},
+      { key: "Gender" },
+      { key: "Email",inputType: TextInput },
 ]);
 
 // Cập nhật editableUser khi modelValue thay đổi
