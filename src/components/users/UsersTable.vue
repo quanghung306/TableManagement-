@@ -40,8 +40,8 @@
             >
               <div class="flex items-center">
                 {{ column.key }}
-                <svg
-                  class="w-4 h-4 transition-all"
+                <i
+                  class="pi pi-arrow-down"
                   :class="{
                     'rotate-0': sortBy === column.key && sortOrder === 'asc',
                     'rotate-180': sortBy === column.key && sortOrder === 'desc',
@@ -49,18 +49,8 @@
                     'opacity-0 group-hover:opacity-100 group-hover:visible':
                       sortBy !== column.key,
                   }"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
+                  style="font-size: 0.8rem"
+                ></i>
               </div>
             </th>
             <th class="bg-blue-500 text-lg text-white text-center w-20">
@@ -139,7 +129,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import SearchInput from "../common/SearchInput.vue";
 import EditUser from "./EditUser.vue";
@@ -175,6 +165,10 @@ const paginatedUsers = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
   return sortedUsers.value.slice(start, start + pageSize.value);
 });
+//gọi API
+onMounted(() => {
+  userStore.fetchUsers();
+});
 watch(
   sortedUsers,
   () => {
@@ -182,7 +176,6 @@ watch(
   },
   { immediate: true }
 );
-
 function toggleSelectAll(event) {
   if (event.target.checked) {
     selectedUsers.value = sortedUsers.value.map((user) => user.id);

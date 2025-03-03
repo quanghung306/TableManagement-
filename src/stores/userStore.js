@@ -31,8 +31,6 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  onMounted(fetchUsers);
-
   // Getter
   const sortedUsers = computed(() => {
     let list = user.value;

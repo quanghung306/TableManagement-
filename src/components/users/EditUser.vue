@@ -1,10 +1,6 @@
-<template>
-  <div
-    v-if="isOpen"
-    class="fixed inset-0 flex items-center justify-center z-50"
-  >
-    <div class="absolute z-0 inset-0 flex bg-gray-900 opacity-50"></div>
-    <div class="bg-white p-6 rounded shadow-lg w-96 absolute z-10">
+<template >
+  <Dialog :isOpen="isOpen">
+    <template #context>
       <h2 class="text-xl font-semibold mb-4">
         {{ modelValue.id ? "Edit User" : "Add User" }}
       </h2>
@@ -52,14 +48,14 @@
           </button>
         </div>
       </form>
-    </div>
-  </div>
+    </template>
+  </Dialog>
 </template>
 <script setup>
 import { ref, watch } from "vue";
-
 import { useUserStore } from "../../stores/userStore";
 import TextInput from "../common/TextInput.vue";
+import Dialog from "../common/Dialog.vue";
 const props = defineProps({
   modelValue: {
     type: Object,
