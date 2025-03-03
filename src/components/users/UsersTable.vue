@@ -1,6 +1,5 @@
 <template>
-  <div class="bg-gray-50 c">
-    <div class="bg-white  rounded-lg shadow-lg">
+    <div class="bg-white rounded-lg m-2  ">
       <div class=" flex justify-between items-center mb-6 ml-2 ">
         <div class="flex space-x-2">
           <SearchInput />
@@ -22,7 +21,7 @@
         </div>
       </div>
       <div class="overflow-auto">
-        <table class="w-full bg-white table-auto">
+        <table class="w-full bg-white table-auto border-gray-300 border-2">
           <thead>
             <tr>
               <th class="bg-blue-500 pl-3 pt-2 text-left w-12">
@@ -136,7 +135,6 @@
       @save="handleSave"
       @close="closeDialog"
     />
-  </div>
 </template>
 
 <script setup>
@@ -193,7 +191,7 @@ const deleteSelectedUsers = () => {
     return;
   }
   Swal.fire({
-    title: "Bạn có chắc muốn xóa các user này?",
+    title: "Are you sure you want to delete these users?",
     text: `Delete ${selectedUsers.value.length} user. This action cannot be undone!`,
     icon: "warning",
     showCancelButton: true,

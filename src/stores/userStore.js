@@ -1,92 +1,7 @@
-// import { defineStore } from "pinia";
-// import { ref, computed } from "vue";
-// import { users as userData } from "../data/users";
-// import { toast } from "vue3-toastify";
-// import "vue3-toastify/dist/index.css";
-// export const useUserStore = defineStore("user", () => {
-//   // State
-//   const users = ref([...userData]);
-//   const sortBy = ref("");
-//   const sortOrder = ref("asc");
-//   const searchQuery = ref("");
-
-//   // Getter
-//   const sortedUsers = computed(() => {
-//     let list = users.value;
-//     if (searchQuery.value) {
-//       list = list.filter((user) =>
-//         user.Name.toLowerCase().includes(searchQuery.value.toLowerCase())
-//       );
-//     }
-//     if (!sortBy.value) return list;
-//     return [...list].sort((a, b) => {
-//       const valA = a[sortBy.value] ? a[sortBy.value].toString() : "";
-//       const valB = b[sortBy.value] ? b[sortBy.value].toString() : "";
-//       const result = valA.localeCompare(valB);
-//       return sortOrder.value === "asc" ? result : -result;
-//     });
-//   });
-
-//   // Action
-//   const toggleSort = (columnKey) => {
-//     if (sortBy.value === columnKey) {
-//       sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
-//     } else {
-//       sortBy.value = columnKey;
-//       sortOrder.value = "asc";
-//     }
-//   };
-
-//   const setSearchQuery = (query) => {
-//     searchQuery.value = query;
-//   };
-
-//  const saveUser = (user) => {
-//     if (!user.Name || !user.Email || !user.Position) {
-//       toast.error("Vui lòng nhập đầy đủ thông tin!", {
-//         autoClose: 3000,
-//         transition: "zoom",
-//       });
-//       return false;
-//     }
-//     const index = users.value.findIndex((u) => u.id === user.id);
-//     if (index !== -1) {
-//       users.value[index] = { ...user, isEditing: false };
-//       toast.success("Cập nhật thông tin thành công!", {
-//         autoClose: 1000,
-//         transition: "zoom",
-//       });
-//     } else {
-//       users.value.push({ ...user, id: Date.now() });
-//       if (!user.Name || !user.Email || !user.Position) {
-//         toast.success("Thêm user thành công!", {
-//           autoClose: 1000,
-//           transition: "zoom",
-//         });
-
-//       }
-//     }
-//   };
-//   const deleteUser = (id) => {
-//     users.value = users.value.filter((u) => u.id !== id);
-//   };
-
-//   return {
-//     users,
-//     sortBy,
-//     sortOrder,
-//     searchQuery,
-//     sortedUsers,
-//     toggleSort,
-//     setSearchQuery,
-//     saveUser,
-//     deleteUser,
-//   };
-// });
 import { defineStore } from "pinia";
 import { ref, computed, onMounted } from "vue";
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
+
+import Swal from "sweetalert2";
 import axios from "axios";
 
 const API_URL = "https://660bb670ccda4cbc75dd7d2f.mockapi.io/users";
@@ -98,13 +13,21 @@ export const useUserStore = defineStore("user", () => {
   const sortOrder = ref("asc");
   const searchQuery = ref("");
 
-
   const fetchUsers = async () => {
     try {
+      Swal.fire({
+        title: "Loading...",
+        text: "Loading data, please wait!",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       const response = await axios.get(API_URL);
       user.value = response.data || [];
+      Swal.close();
     } catch (error) {
-      toast.error("Lỗi khi tải dữ liệu nhà sản xuất!");
+      Swal.fire("Error loading data!!", "", "error");
     }
   };
 
@@ -114,8 +37,8 @@ export const useUserStore = defineStore("user", () => {
   const sortedUsers = computed(() => {
     let list = user.value;
     if (searchQuery.value) {
-      list = list.filter((manufacturer) =>
-        manufacturer.Name.toLowerCase().includes(searchQuery.value.toLowerCase())
+      list = list.filter((user) =>
+        user.Name.toLowerCase().includes(searchQuery.value.toLowerCase())
       );
     }
     if (!sortBy.value) return list;
@@ -144,24 +67,30 @@ export const useUserStore = defineStore("user", () => {
   const saveUser = async (newUser) => {
     try {
       if (!newUser.Name || !newUser.Position) {
-        toast.error("Vui lòng nhập đầy đủ thông tin!");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Please enter complete information!",
+        });
         return false;
       }
-  
+
       if (newUser.id) {
         await axios.put(`${API_URL}/${newUser.id}`, newUser);
-        user.value = user.value.map((m) =>
-          m.id === newUser.id ? newUser : m
-        );
-        toast.success("Update User Successfully!");
+        user.value = user.value.map((m) => (m.id === newUser.id ? newUser : m));
+        Swal.fire("Update User Successfully!", "", "success");
         return true;
       } else {
         const response = await axios.post(API_URL, newUser);
         user.value.push(response.data);
-        toast.success("Add New User Successfully!");
+        Swal.fire("Add New User Successfully!", "", "success");
       }
     } catch (error) {
-      toast.error("Cant save user!");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Cant save user!",
+      });
       return false;
     }
   };
@@ -170,9 +99,8 @@ export const useUserStore = defineStore("user", () => {
     try {
       await axios.delete(`${API_URL}/${id}`);
       user.value = user.value.filter((m) => m.id !== id);
-      toast.success("Delete Users Successfully!");
     } catch (error) {
-      toast.error("Error!");
+      console.log(error);
     }
   };
 
@@ -189,4 +117,3 @@ export const useUserStore = defineStore("user", () => {
     fetchUsers,
   };
 });
-
