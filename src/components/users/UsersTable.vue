@@ -142,7 +142,7 @@ import { ref, computed, watch } from "vue";
 import { storeToRefs } from "pinia";
 import SearchInput from "../common/SearchInput.vue";
 import EditUser from "./EditUser.vue";
-import { useColumnStore } from "../../stores/columnStore";
+import { useColumnStore } from "../../stores/columnUserStore";
 import { useUserStore } from "../../stores/userStore";
 import Swal from "sweetalert2";
 import Pagination from "../common/Pagination.vue";
