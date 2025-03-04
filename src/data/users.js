@@ -1,4 +1,3 @@
-
 export const users = [
   {
     id: 1,
@@ -8,7 +7,8 @@ export const users = [
     Department: "Optimization",
     Status: "Active",
     Role: "Member",
-    Avatar:"https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
+    Avatar:
+      "https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
     isEditing: false,
   },
   {
@@ -19,7 +19,8 @@ export const users = [
     Department: "Intranet",
     Status: "Pending",
     Role: "Admin",
-    Avatar:"https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
+    Avatar:
+      "https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
 
     isEditing: false,
   },
@@ -31,7 +32,8 @@ export const users = [
     Department: "Directives",
     Status: "Active",
     Role: "Member",
-    Avatar:"https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
+    Avatar:
+      "https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
     isEditing: false,
   },
   {
@@ -42,7 +44,8 @@ export const users = [
     Department: "Program",
     Status: "Inactive",
     Role: "Admin",
-    Avatar:"https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
+    Avatar:
+      "https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
     isEditing: false,
   },
   {
@@ -53,7 +56,8 @@ export const users = [
     Department: "Mobility",
     Status: "Active",
     Role: "Owner",
-    Avatar:"https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
+    Avatar:
+      "https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
     isEditing: false,
   },
   {
@@ -64,7 +68,8 @@ export const users = [
     Department: "Security",
     Status: "Inactive",
     Role: "Member",
-    Avatar:"https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
+    Avatar:
+      "https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
     isEditing: false,
   },
   {
@@ -75,7 +80,8 @@ export const users = [
     Department: "Security",
     Status: "Inactive",
     Role: "Member",
-    Avatar:"https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
+    Avatar:
+      "https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
     isEditing: false,
   },
   {
@@ -86,7 +92,8 @@ export const users = [
     Department: "Security",
     Status: "Inactive",
     Role: "Member",
-    Avatar:"https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
+    Avatar:
+      "https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
     isEditing: false,
   },
   {
@@ -97,7 +104,8 @@ export const users = [
     Department: "Security",
     Status: "Inactive",
     Role: "Member",
-    Avatar:"https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
+    Avatar:
+      "https://res.cloudinary.com/quanghung/image/upload/v1739957900/350512317_2248145465395698_4189543060711641401_n_xcokha.jpg",
     isEditing: false,
   },
 ];
