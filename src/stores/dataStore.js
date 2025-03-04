@@ -71,7 +71,7 @@ export const useDataStore = defineStore("data", () => {
   const saveItem = async (newItem) => {
     if (!apiURL.value) return;
     try {
-      if (!newItem.Name) {
+      if (!newItem.Name && !newItem.ProductName) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
