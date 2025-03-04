@@ -129,21 +129,21 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted,} from "vue";
 import { storeToRefs } from "pinia";
 import SearchInput from "../common/SearchInput.vue";
 import EditUser from "./EditUser.vue";
-import { useUserStore } from "../../stores/userStore";
+import { useDataStore } from "../../stores/dataStore";
 import Swal from "sweetalert2";
 import Pagination from "../common/Pagination.vue";
 import { usePaginationStore } from "../../stores/paginationStore";
 
-const userStore = useUserStore();
+const userStore = useDataStore();
 
 const paginationStore = usePaginationStore();
 const { currentPage, pageSize } = storeToRefs(paginationStore);
 
-const { sortedUsers, sortBy, sortOrder, toggleSort } = storeToRefs(userStore);
+const { sortedItems, sortBy, sortOrder, toggleSort } = storeToRefs(userStore);
 
 const isDialogOpen = ref(false);
 const selectedUser = ref({});
@@ -158,27 +158,28 @@ const columns = ref([
 ]);
 
 const isAllSelected = computed(
-  () => selectedUsers.value.length === sortedUsers.value.length
+  () => selectedUsers.value.length === sortedItems.value.length
 );
 
 const paginatedUsers = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value;
-  return sortedUsers.value.slice(start, start + pageSize.value);
+  return sortedItems.value.slice(start, start + pageSize.value);
 });
 //gọi API
 onMounted(() => {
-  userStore.fetchUsers();
+  userStore.SetApi("https://660bb670ccda4cbc75dd7d2f.mockapi.io/users");
+  userStore.fetchData();
 });
 watch(
-  sortedUsers,
+  sortedItems,
   () => {
-    paginationStore.setTotalItems(sortedUsers.value.length);
+    paginationStore.setTotalItems(sortedItems.value.length);
   },
   { immediate: true }
 );
 function toggleSelectAll(event) {
   if (event.target.checked) {
-    selectedUsers.value = sortedUsers.value.map((user) => user.id);
+    selectedUsers.value = sortedItems.value.map((user) => user.id);
   } else {
     selectedUsers.value = [];
   }
