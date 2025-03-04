@@ -3,7 +3,7 @@
     <SideBar v-if="authStore.user" />
     <div class="flex-1 flex flex-col">
       <Navbar v-if="authStore.user" />
-      <div>
+      <div class="overflow-scroll h-[calc(100vh-64px)]"  >
         <router-view />
       </div>
     </div>

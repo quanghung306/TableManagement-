@@ -18,6 +18,11 @@ const routes = [
     meta: { requiresAuth: true }, // đã đăng nhập
   },
   {
+    path: "/product",
+    component: () => import("../views/ProductView.vue"),
+    meta: { requiresAuth: true }, 
+  },
+  {
     path: "/:pathMatch(.*)*",
     component: () => import("../components/common/NotFoundForm.vue"),
   },

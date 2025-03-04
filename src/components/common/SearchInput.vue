@@ -39,9 +39,9 @@
   
   <script setup>
 import { ref } from "vue";
-import { useUserStore } from "../../stores/userStore";
+import { useDataStore } from "../../stores/dataStore";
 
-const userStore = useUserStore();
+const userStore = useDataStore();
 const localQuery = ref(userStore.searchQuery);
 
 const handleSearch = () => {

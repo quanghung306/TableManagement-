@@ -53,7 +53,7 @@
 </template>
 <script setup>
 import { ref, watch } from "vue";
-import { useUserStore } from "../../stores/userStore";
+import { useDataStore } from "../../stores/dataStore";
 import TextInput from "../common/TextInput.vue";
 import Dialog from "../common/Dialog.vue";
 const props = defineProps({
@@ -68,7 +68,7 @@ const props = defineProps({
 });
 const emit = defineEmits(["save", "close"]);
 
-const userStore = useUserStore();
+const userStore = useDataStore();
 
 const editableUser = ref({});
 const columns = ref([
