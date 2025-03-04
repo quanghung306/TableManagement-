@@ -89,7 +89,8 @@ watch(
 );
 
 async function handleSubmit() {
-  const result = await userStore.saveUser({ ...editableUser.value }); // Chờ kết quả
+  const result = await userStore.saveItem({ ...editableUser.value });
+
   console.log("🚀 ~ handleSubmit ~ result:", result);
   if (result !== false) {
     close();
