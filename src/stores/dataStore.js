@@ -47,8 +47,8 @@ export const useDataStore = defineStore("data", () => {
     }
     if (!sortBy.value) return list;
     return [...list].sort((a, b) => {
-      const valA = a[sortBy.value].toString() || "";
-      const valB = b[sortBy.value].toString() || "";
+      const valA = a[sortBy.value] ? a[sortBy.value].toString() : "";
+      const valB = b[sortBy.value] ? b[sortBy.value].toString() : "";
       const result = valA.localeCompare(valB);
       return sortOrder.value === "asc" ? result : -result;
     });
@@ -96,13 +96,37 @@ export const useDataStore = defineStore("data", () => {
       return false;
     }
   };
-  const deleteItems = async (id) => {
+  const deleteItems = async (productId) => {
     if (!apiURL.value) return;
     try {
-      await axios.delete(`${apiURL.value}/${id}`);
-      items.value = items.value.filter((item) => item.id !== id);
+      const url = `${apiURL.value}/${String(productId)}`;
+      console.log("API URL:", apiURL.value);
+      console.log("Deleting:", url);
+
+      // Kiểm tra item có tồn tại trong danh sách không
+      const foundItem = items.value.find(
+        (item) => item.id === String(productId)
+      );
+      console.log("Item found:", foundItem);
+
+      if (!foundItem) {
+        console.error("Delete Error: Item not found in local state");
+        return;
+      }
+      await axios.delete(url);
+      items.value = items.value.filter((item) => item.id !== String(productId));
     } catch (error) {
-      console.log(error);
+      console.error("Delete Error:", error.response?.data || error.message);
+      Swal.fire("Failed to delete!", "", "error");
+    }
+  };
+  const updateItem = async (id, updatedData) => {
+    try {
+      const response = await axios.put(`${apiURL.value}/${id}`, updatedData);
+      return response.data;
+    } catch (error) {
+      console.error("Update error:", error);
+      throw error;
     }
   };
 
@@ -118,5 +142,6 @@ export const useDataStore = defineStore("data", () => {
     saveItem,
     deleteItems,
     fetchData,
+    updateItem,
   };
 });
