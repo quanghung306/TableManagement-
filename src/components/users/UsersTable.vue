@@ -144,7 +144,6 @@ const paginationStore = usePaginationStore();
 const { currentPage, pageSize } = storeToRefs(paginationStore);
 
 const { sortedItems, sortBy, sortOrder, toggleSort } = storeToRefs(userStore);
-
 const isDialogOpen = ref(false);
 const selectedUser = ref({});
 const selectedUsers = ref([]);

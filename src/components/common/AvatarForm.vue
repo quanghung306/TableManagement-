@@ -35,10 +35,10 @@
     </transition>
   </Menu>
 </template>
-  
-  <script setup>
+<script setup lang="ts">
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { useAuthStore } from "../../stores/authStore";
+
 import { useRouter } from "vue-router";
 const authStore = useAuthStore();
 const router = useRouter();

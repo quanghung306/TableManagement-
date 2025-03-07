@@ -3,7 +3,7 @@
         <ProductTable/>
     </div>
   </template>
-    <script setup>
+    <script setup  >
   import ProductTable from "../components/products/ProductTable.vue";
   </script>
     

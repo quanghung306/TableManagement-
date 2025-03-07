@@ -1,20 +1,24 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-
 import Swal from "sweetalert2";
 import axios from "axios";
 
-// const API_URL = "https://660bb670ccda4cbc75dd7d2f.mockapi.io/users";
+interface Item {
+  id?: string;
+  Name?: string;
+  ProductName?: string;
+  [key: string]: any;
+}
 
 export const useDataStore = defineStore("data", () => {
   // State
-  const items = ref([]);
-  const sortBy = ref("");
-  const sortOrder = ref("asc");
-  const searchQuery = ref("");
-  const apiURL = ref("");
+  const items = ref<Item[]>([]);
+  const sortBy = ref<string>("");
+  const sortOrder = ref<"asc" | "desc">("asc");
+  const searchQuery = ref<string>("");
+  const apiURL = ref<string>("");
 
-  const SetApi = (url) => {
+  const SetApi = (url: string) => {
     apiURL.value = url;
   };
 
@@ -29,7 +33,7 @@ export const useDataStore = defineStore("data", () => {
           Swal.showLoading();
         },
       });
-      const response = await axios.get(apiURL.value);
+      const response = await axios.get<Item[]>(apiURL.value);
       items.value = response.data || [];
       Swal.close();
     } catch (error) {
@@ -38,11 +42,11 @@ export const useDataStore = defineStore("data", () => {
   };
 
   // Getter
-  const sortedItems = computed(() => {
+  const sortedItems = computed<Item[]>(() => {
     let list = items.value;
     if (searchQuery.value) {
-      list = list.filter((items) =>
-        items.Name?.toLowerCase().includes(searchQuery.value.toLowerCase())
+      list = list.filter((item) =>
+        item.Name?.toLowerCase().includes(searchQuery.value.toLowerCase())
       );
     }
     if (!sortBy.value) return list;
@@ -55,7 +59,7 @@ export const useDataStore = defineStore("data", () => {
   });
 
   // Actions
-  const toggleSort = (columnKey) => {
+  const toggleSort = (columnKey: string) => {
     if (sortBy.value === columnKey) {
       sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
     } else {
@@ -64,12 +68,12 @@ export const useDataStore = defineStore("data", () => {
     }
   };
 
-  const setSearchQuery = (query) => {
+  const setSearchQuery = (query: string) => {
     searchQuery.value = query;
   };
 
-  const saveItem = async (newItem) => {
-    if (!apiURL.value) return;
+  const saveItem = async (newItem: Item): Promise<boolean> => {
+    if (!apiURL.value) return false;
     try {
       if (!newItem.Name && !newItem.ProductName) {
         Swal.fire({
@@ -87,42 +91,40 @@ export const useDataStore = defineStore("data", () => {
         );
         Swal.fire("Update Successfully!", "", "success");
       } else {
-        const response = await axios.post(apiURL.value, newItem);
+        const response = await axios.post<Item>(apiURL.value, newItem);
         items.value.push(response.data);
         Swal.fire("Added Successfully!", "", "success");
       }
+      return true;
     } catch (error) {
       Swal.fire({ icon: "error", title: "Oops...", text: "Can't save item!" });
       return false;
     }
   };
-  const deleteItems = async (productId) => {
+
+  const deleteItems = async (productId: string) => {
     if (!apiURL.value) return;
     try {
-      const url = `${apiURL.value}/${String(productId)}`;
-      console.log("API URL:", apiURL.value);
-      console.log("Deleting:", url);
-
-      // Kiểm tra item có tồn tại trong danh sách không
-      const foundItem = items.value.find(
-        (item) => item.id === String(productId)
-      );
-      console.log("Item found:", foundItem);
-
+      const url = `${apiURL.value}/${productId}`;
+      const foundItem = items.value.find((item) => item.id === productId);
       if (!foundItem) {
         console.error("Delete Error: Item not found in local state");
         return;
       }
       await axios.delete(url);
-      items.value = items.value.filter((item) => item.id !== String(productId));
+      items.value = items.value.filter((item) => item.id !== productId);
     } catch (error) {
-      console.error("Delete Error:", error.response?.data || error.message);
+      console.error("Delete Error:", error);
       Swal.fire("Failed to delete!", "", "error");
     }
   };
-  const updateItem = async (id, updatedData) => {
+
+  const updateItem = async (id: string, updatedData: Partial<Item>) => {
     try {
-      const response = await axios.put(`${apiURL.value}/${id}`, updatedData);
+      const response = await axios.put<Item>(
+        `${apiURL.value}/${id}`,
+        updatedData
+      );
       return response.data;
     } catch (error) {
       console.error("Update error:", error);
@@ -131,11 +133,11 @@ export const useDataStore = defineStore("data", () => {
   };
 
   return {
-    SetApi,
     items,
     sortBy,
     sortOrder,
     searchQuery,
+    SetApi,
     sortedItems,
     toggleSort,
     setSearchQuery,

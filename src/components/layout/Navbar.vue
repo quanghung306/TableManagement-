@@ -5,7 +5,7 @@
     <AvatarForm />
   </nav>
 </template>
-  <script setup>
-import AvatarForm from "../common/AvatarForm.vue";
+  <script setup lang="ts">
+import * as AvatarForm from '../common/AvatarForm.vue';
 </script>
   

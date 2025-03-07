@@ -1,10 +1,14 @@
-<script setup>
-const props = defineProps(["modelValue"]);
-const emit = defineEmits(["update:modelValue"]);
+<script setup lang="ts">
+import { defineProps, defineEmits } from "vue";
 
-const updateValue = (event) => {
-  const value = event.target.value;
-  emit("update:modelValue", value);
+const props = defineProps<{ modelValue: string }>();
+const emit = defineEmits<{
+  (event: "update:modelValue", value: string): void;
+}>();
+
+const updateValue = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  emit("update:modelValue", target.value);
 };
 </script>
 
