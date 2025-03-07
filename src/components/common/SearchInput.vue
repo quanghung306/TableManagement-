@@ -37,19 +37,22 @@
   </div>
 </template>
   
-  <script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { computed } from "vue";
 import { useDataStore } from "../../stores/dataStore";
-
+ 
 const userStore = useDataStore();
-const localQuery = ref(userStore.searchQuery);
-
+const localQuery = computed({
+  get: () => userStore.searchQuery,
+  set: (value) => userStore.setSearchQuery(String(value)),
+});
 const handleSearch = () => {
-  userStore.setSearchQuery(localQuery.value);
+  userStore.setSearchQuery(String(localQuery.value));
 };
-
+// const clearSearch = () => {
+//   localQuery.value = "";
+// };
 const clearSearch = () => {
-  localQuery.value = "";
   userStore.setSearchQuery("");
 };
 </script>

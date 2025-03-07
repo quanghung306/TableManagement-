@@ -79,14 +79,29 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "../stores/authStore";
+import type { FormKitNode } from "@formkit/core";
+
 const authStore = useAuthStore();
 const { isLoading } = storeToRefs(authStore);
-const handleLogin = (formData) => authStore.login(formData);
-const handleIconClick = (node) => {
-  node.props.suffixIcon = node.props.suffixIcon === "eye" ? "eyeClosed" : "eye";
-  node.props.type = node.props.type === "password" ? "text" : "password";
+
+interface LoginForm {
+  username: string;
+  password: string;
+  rememberMe?: boolean;
+}
+
+const handleLogin = (formData: LoginForm) => {
+  authStore.login(formData);
+};
+
+const handleIconClick = (node: FormKitNode) => {
+  const isPassword = node.props.type === "password";
+  node.input({
+    type: isPassword ? "text" : "password",
+    suffixIcon: isPassword ? "eye" : "eyeClosed",
+  });
 };
 </script>

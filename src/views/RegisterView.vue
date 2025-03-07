@@ -40,7 +40,7 @@
         <FormKit
           type="submit"
           :disabled="isLoading"
-          :label="isLoading ? 'Register in...' : 'Register'"
+          :label="isLoading ? 'Registering...' : 'Register'"
           :sections-schema="{
             outer: { $el: 'div', attrs: { class: 'w-full' } },
             input: {
@@ -70,15 +70,23 @@
     </div>
   </div>
 </template>
-  <script setup>
+
+<script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/authStore";
+
+interface RegisterForm {
+  username: string;
+  password: string;
+  password_confirm: string;
+}
+
 const authStore = useAuthStore();
 const router = useRouter();
 const { isLoading } = storeToRefs(authStore);
-const handleRegister = (formData) => {
+
+const handleRegister = (formData: RegisterForm) => {
   authStore.register(formData);
 };
 </script>
-  

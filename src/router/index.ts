@@ -5,7 +5,7 @@ const routes = [
   { 
     path: "/login", 
     component: () => import("../views/LoginView.vue"),
-    meta: { guestOnly: true }, //  chưa đăng nhập
+    meta: { guestOnly: true }, // Chỉ dành cho khách
   },
   { 
     path: "/register", 
@@ -15,7 +15,7 @@ const routes = [
   {
     path: "/users",
     component: () => import("../views/UsersView.vue"),
-    meta: { requiresAuth: true }, // đã đăng nhập
+    meta: { requiresAuth: true }, // Chỉ dành cho user đã đăng nhập
   },
   {
     path: "/product",
@@ -33,16 +33,14 @@ const router = createRouter({
   routes,
 });
 
-//  Navigation Guard  kiểm tra quyền truy cập
+//  Navigation Guard kiểm tra quyền truy cập
 router.beforeEach((to) => {
-  const authStore = useAuthStore();
-  //nếu chưa đăng nhập thì sẽ chuyển về trang login
+  const authStore = useAuthStore(); // Lấy store trong mỗi lần điều hướng
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    return "/login";
+    return "/login"; // Chuyển về trang login nếu chưa đăng nhập
   }
-  // nếu đã đăng nhập thì không thể về trang login đc
   if (to.meta.guestOnly && authStore.isAuthenticated) {
-    return "/users";
+    return "/users"; // Nếu đã đăng nhập, chặn truy cập trang login/register
   }
 });
 

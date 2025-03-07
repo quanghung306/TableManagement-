@@ -10,8 +10,8 @@
   </div>
 </template>
 
-<script setup>
-import Navbar from "./components/layout/Navbar.vue";
+<script setup > 
+import  Navbar from "./components/layout/Navbar.vue";
 import SideBar from "./components/layout/SideBar.vue";
 import { useAuthStore } from "./stores/authStore";
 const authStore = useAuthStore();

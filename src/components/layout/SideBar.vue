@@ -1,17 +1,13 @@
 <template>
   <div
     class="bg-gray-50 text-gray-800 h-screen transition-all duration-300 flex flex-col font-serif"
-    :style="{ width: isOpen ? '16rem' : '4rem' }"
+    :class="isOpen ? 'w-64' : 'w-16'"
   >
     <!-- Toggle Button -->
-    <div
-      class="p-4 flex items-center bg-gray-100 border-b border-gray-300 h-16"
-    >
+    <div class="p-4 flex items-center bg-gray-100 border-b border-gray-300 h-16">
       <div class="flex items-center gap-3 flex-1">
         <i class="pi pi-microsoft"></i>
-        <h1 v-if="isOpen" class="text-2xl font-bold text-gray-800">
-          Dashboard
-        </h1>
+        <h1 v-if="isOpen" class="text-2xl font-bold text-gray-800">Dashboard</h1>
       </div>
       <button @click="toggleSidebar" class="focus:outline-none">
         <svg
@@ -20,8 +16,8 @@
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="w-6 h-6 text-gray-800 cursor-pointer duration-300 transition-transform ml-3"
-          :class="{ 'rotate-180': isOpen }"
+          class="w-6 h-6 text-gray-800 cursor-pointer ml-3 transition duration-300"
+          :class="isOpen ? 'rotate-180' : ''"
         >
           <path
             stroke-linecap="round"
@@ -42,27 +38,10 @@
             class="flex items-center px-4 py-3 space-x-3 hover:bg-gray-300 transition-colors duration-200"
           >
             <i
-              v-if="item.name === 'Users Management'"
-              class="pi pi-users transition-all duration-200"
+              :class="['pi', item.icon, 'transition-all duration-200', { 'text-black scale-100': route.path === item.path }]"
               style="font-size: 1.5rem"
-              :class="{
-                'text-black scale-100':
-                  route.path === item.path || route.path === item.path,
-              }"
             />
-            <i
-              v-if="item.name === 'Product Management'"
-              class="pi pi-box transition-all duration-200"
-              style="font-size: 1.5rem"
-              :class="{
-                'text-black scale-100':
-                  route.path === item.path || route.path === item.path,
-              }"
-            />
-            <p
-              v-show="isOpen"
-              class="text-lg transition-all duration-200 whitespace-nowrap"
-            >
+            <p v-show="isOpen" class="text-lg transition-all duration-200 whitespace-nowrap">
               {{ item.name }}
             </p>
           </router-link>
@@ -72,26 +51,30 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import { useRoute } from "vue-router";
+
+interface MenuItem {
+  name: string;
+  path: string;
+  icon: string;
+}
+
 const route = useRoute();
-// Sidebar state
-const isOpen = ref(true);
-const menuItems = [
-  { name: "Users Management", path: "/users" },
-  { name: "Product Management", path: "/product" },
+const isOpen = ref<boolean>(true);
+
+const menuItems: MenuItem[] = [
+  { name: "Users Management", path: "/users", icon: "pi-users" },
+  { name: "Product Management", path: "/product", icon: "pi-box" },
 ];
 
-// Toggle sidebar
 const toggleSidebar = () => {
   isOpen.value = !isOpen.value;
 };
 </script>
+
 <style scoped>
-button svg {
-  transition: transform 0.3s ease;
-}
 .router-link-active {
   background-color: #c6c7c96b;
   font-weight: bold;

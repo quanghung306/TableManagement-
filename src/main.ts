@@ -5,6 +5,7 @@ import "@formkit/themes/genesis";
 import PrimeVue from "primevue/config";
 import Button from "primevue/button"
 import router from "./router";
+
 import "./style.css";
 
 import App from "./App.vue";

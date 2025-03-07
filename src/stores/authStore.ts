@@ -1,19 +1,21 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
+import router from "../router"; 
+
+interface User {
+  username: string;
+  password: string;
+}
 
 export const useAuthStore = defineStore("auth", () => {
-  const user = ref(null);
-  const router = useRouter();
-  const isLoading = ref(false);
-  const errorMessage = ref("");
+  const user = ref<User | null>(null);
+  const isLoading = ref<boolean>(false);
+  const errorMessage = ref<string>("");
 
-  const getRegisteredUsers = () =>
-    JSON.parse(localStorage.getItem("registeredUsers")) || [];
+  const getRegisteredUsers = (): User[] =>
+    JSON.parse(localStorage.getItem("registeredUsers") || "[]");
 
-  const checkAuth = () => {
+  const checkAuth = (): void => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) user.value = JSON.parse(savedUser);
   };
@@ -21,7 +23,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   const isAuthenticated = computed(() => !!user.value);
 
-  const register = async (formData) => {
+  const register = async (formData: User): Promise<void> => {
     isLoading.value = true;
     errorMessage.value = "";
     await new Promise((r) => setTimeout(r, 1500));
@@ -38,14 +40,13 @@ export const useAuthStore = defineStore("auth", () => {
     } else {
       registeredUsers.push(formData);
       localStorage.setItem("registeredUsers", JSON.stringify(registeredUsers));
-      toast.success("Đăng ký thành công! Vui lòng đăng nhập.");
-      router.push("/login");
+      router.push("/login"); 
     }
 
     isLoading.value = false;
   };
 
-  const login = async (formData) => {
+  const login = async (formData: User): Promise<void> => {
     isLoading.value = true;
     errorMessage.value = "";
     await new Promise((r) => setTimeout(r, 1500));
@@ -57,8 +58,7 @@ export const useAuthStore = defineStore("auth", () => {
     if (userFound) {
       user.value = userFound;
       localStorage.setItem("user", JSON.stringify(userFound));
-      toast.success("Đăng nhập thành công!");
-      router.push("/users");
+      router.push("/users"); 
     } else {
       errorMessage.value = "Sai username hoặc password!";
     }
@@ -66,10 +66,10 @@ export const useAuthStore = defineStore("auth", () => {
     isLoading.value = false;
   };
 
-  const logout = () => {
+  const logout = (): void => {
     user.value = null;
     localStorage.removeItem("user");
-    router.push("/login");
+    router.push("/login"); 
   };
 
   return {

@@ -12,8 +12,6 @@
     </router-link>
   </div>
 </template>
-  <script setup>
-</script>
   
   <style scoped>
 .fade-in {
