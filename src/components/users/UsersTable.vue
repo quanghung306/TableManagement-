@@ -6,7 +6,7 @@
       </div>
       <div class="flex space-x-2 mr-4 mt-2">
         <button
-          v-if="selectedUsers.length >=1"
+          v-if="selectedUsers.length >= 1"
           @click="deleteSelectedUsers"
           class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer"
         >
@@ -128,27 +128,37 @@
   />
 </template>
 
-<script setup>
-import { ref, computed, watch, onMounted,} from "vue";
+<script setup lang="ts">
+import { ref, computed, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
-import SearchInput from "../common/SearchInput.vue";
+import SearchInput from "../common/SearchInpt.vue";
 import EditUser from "./EditUser.vue";
 import { useDataStore } from "../../stores/dataStore";
 import Swal from "sweetalert2";
 import Pagination from "../common/Pagination.vue";
 import { usePaginationStore } from "../../stores/paginationStore";
+interface User {
+  id: string;
+  Name: string;
+  Position: string;
+  Status: "Active" | "Inactive" | "Pending";
+  Gender: "Male" | "Female";
+  Email: string;
+  Avatar: string;
+}
 
+//store
 const userStore = useDataStore();
-
 const paginationStore = usePaginationStore();
 const { currentPage, pageSize } = storeToRefs(paginationStore);
+const { sortedItems, sortBy, sortOrder } = storeToRefs(userStore);
 
-const { sortedItems, sortBy, sortOrder, toggleSort } = storeToRefs(userStore);
-const isDialogOpen = ref(false);
-const selectedUser = ref({});
-const selectedUsers = ref([]);
+//Diaglog & user State
+const isDialogOpen = ref<boolean>(false);
+const selectedUser = ref<User | Partial<User>>({});
+const selectedUsers = ref<string[]>([]);
 
-const columns = ref([
+const columns = ref<{ key: keyof User }[]>([
   { key: "Name" },
   { key: "Position" },
   { key: "Status" },
@@ -156,13 +166,13 @@ const columns = ref([
   { key: "Email" },
 ]);
 
-const isAllSelected = computed(
+const isAllSelected = computed<boolean>(
   () => selectedUsers.value.length === sortedItems.value.length
 );
 
-const paginatedUsers = computed(() => {
+const paginatedUsers = computed<User[]>(() => {
   const start = (currentPage.value - 1) * pageSize.value;
-  return sortedItems.value.slice(start, start + pageSize.value);
+  return sortedItems.value.slice(start, start + pageSize.value) as User[];
 });
 //gọi API
 onMounted(() => {
@@ -176,13 +186,14 @@ watch(
   },
   { immediate: true }
 );
-function toggleSelectAll(event) {
-  if (event.target.checked) {
-    selectedUsers.value = sortedItems.value.map((user) => user.id);
+const toggleSelectAll = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.checked) {
+    selectedUsers.value = sortedItems.value.map((user) => user.id as string);
   } else {
     selectedUsers.value = [];
   }
-}
+};
 
 const deleteSelectedUsers = () => {
   if (selectedUsers.value.length === 0) {
@@ -208,30 +219,30 @@ const deleteSelectedUsers = () => {
     }
   });
 };
-function openEditDialog(user) {
+const openEditDialog = (user: User) => {
   selectedUser.value = { ...user };
   isDialogOpen.value = true;
-}
+};
 
-function openAddDialog() {
+const openAddDialog = () => {
   selectedUser.value = {};
   isDialogOpen.value = true;
-}
+};
 
-function closeDialog() {
+const closeDialog = () => {
   isDialogOpen.value = false;
-}
+};
 
-function handleSave(updatedUser) {
-  userStore.updateUser(updatedUser);
+const handleSave = (updatedUser: User) => {
+  userStore.updateItem(updatedUser.id, updatedUser);
   closeDialog();
-}
+};
 
-function handleColumnSort(columnKey) {
+const handleColumnSort = (columnKey: keyof User) => {
   userStore.toggleSort(columnKey);
-}
+};
 
-const getStatusClass = (status) => {
+const getStatusClass = (status: User["Status"]) => {
   switch (status) {
     case "Active":
       return "bg-green-100 text-green-800";
