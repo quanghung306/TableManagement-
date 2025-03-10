@@ -6,6 +6,6 @@
   </nav>
 </template>
   <script setup lang="ts">
-import * as AvatarForm from '../common/AvatarForm.vue';
+import AvatarForm from '../common/AvatarForm.vue';
 </script>
   
