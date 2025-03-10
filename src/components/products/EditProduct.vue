@@ -1,8 +1,8 @@
-<template >
+<template>
   <Dialog :isOpen="isOpen">
     <template #context>
       <h2 class="text-xl font-semibold mb-4">
-        {{ modelValue.id ? "Edit User" : "Add User" }}
+        {{ modelValue.id ? "Edit Product" : "Add Product" }}
       </h2>
       <form @submit.prevent="handleSubmit">
         <div v-for="column in columns" :key="column.key" class="mb-4">
@@ -33,7 +33,8 @@
     </template>
   </Dialog>
 </template>
-<script setup>
+
+<script setup lang="ts">
 import { ref, watch } from "vue";
 import { useDataStore } from "../../stores/dataStore";
 import TextInput from "../common/TextInput.vue";
@@ -41,15 +42,32 @@ import Dialog from "../common/Dialog.vue";
 import NumberInput from "../common/NumberInput.vue";
 import Swal from "sweetalert2";
 
-const props = defineProps({
-  modelValue: Object,
-  isOpen: Boolean,
-});
-const emit = defineEmits(["save", "close"]);
+interface Product {
+  id: string;
+  ProductName: string;
+  Category: string;
+  Price: number;
+  Stock: number;
+}
+
+interface Column {
+  key: keyof Product;
+  inputType?: any;
+}
+
+const props = defineProps<{
+  modelValue: Product;
+  isOpen: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: "save", product: Product): void;
+  (e: "close"): void;
+}>();
 
 const productStore = useDataStore();
-const editableProduct  = ref({});
-const columns = ref([
+const editableProduct = ref<Partial<Product>>({});
+const columns = ref<Column[]>([
   { key: "ProductName", inputType: TextInput },
   { key: "Category", inputType: TextInput },
   { key: "Price", inputType: NumberInput },
@@ -59,14 +77,14 @@ const columns = ref([
 watch(
   () => props.modelValue,
   (newVal) => {
-    editableProduct.value = Object.assign({}, newVal || {});
+    editableProduct.value = newVal ? { ...newVal } : {};
   },
   { immediate: true }
 );
 
-const isValidNumber = (value) => !isNaN(value) && value !== "";
+const isValidNumber = (value: any): boolean => !isNaN(value) && value !== "";
 
-function validateForm() {
+const validateForm=(): boolean => {
   if (
     !isValidNumber(editableProduct.value.Price) ||
     !isValidNumber(editableProduct.value.Stock)
@@ -77,25 +95,17 @@ function validateForm() {
   return true;
 }
 
-async function handleSubmit() {
-  if (!validateForm()) return ;
+ const handleSubmit =async()=> {
+  if (!validateForm()) return;
 
-  const result = await productStore.saveItem(editableProduct.value);
+  const result = await productStore.saveItem(editableProduct.value as Product);
   if (result !== false) {
     Swal.fire("Success", "Item saved successfully!", "success");
     close();
   }
 }
 
-// async function handleSubmit() {
-//   const result = await productStore.saveItem({ ...editableProduct.value });
-
-//   console.log("🚀 ~ handleSubmit ~ result:", result);
-//   if (result !== false) {
-//     close();
-//   }
-// }
-function close() {
+const close=()=> {
   emit("close");
 }
 </script>

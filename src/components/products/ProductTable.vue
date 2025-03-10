@@ -77,7 +77,7 @@
             <td v-for="column in columns" :key="column.key" class="py-4 px-2">
               <template v-if="editingRow === item.id">
                 <component
-                 :is="column.inputType || 'input'"
+                  :is="column.inputType || 'input'"
                   v-model="editedItem[column.key]"
                   class="border border-gray-600 p-1 rounded"
                 />
@@ -118,11 +118,11 @@
     @close="closeDialog"
   />
 </template>
-    
-    <script setup>
+
+<script setup lang="ts">
 import { ref, computed, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
-import SearchInput from "../common/SearchInpt.vue";
+import SearchInput from "../common/SearchInput.vue";
 import { useDataStore } from "../../stores/dataStore";
 import Swal from "sweetalert2";
 import Pagination from "../common/Pagination.vue";
@@ -130,20 +130,31 @@ import { usePaginationStore } from "../../stores/paginationStore";
 import EditProduct from "./EditProduct.vue";
 import NumberInput from "../common/NumberInput.vue";
 import TextInput from "../common/TextInput.vue";
-
+interface Product {
+  id: string;
+  ProductName: string;
+  Category: string;
+  Price: number;
+  Stock: number;
+}
+interface Column {
+  key: keyof Product;
+  inputType?: any;
+}
+//store
 const productStore = useDataStore();
 const paginationStore = usePaginationStore();
 const { currentPage, pageSize } = storeToRefs(paginationStore);
-const { sortedItems, sortBy, sortOrder, toggleSort } =
-  storeToRefs(productStore);
-const editingRow = ref(null);
-const editedItem = ref({});
-const selectedItems = ref([]);
+const { sortedItems, sortBy, sortOrder } = storeToRefs(productStore);
+//data
+const editingRow = ref<string | null>(null);
+const editedItem = ref<Partial<Product>>({});
+const selectedItems = ref<string[]>([]);
 const isDialogOpen = ref(false);
-const columns = ref([
+const columns = ref<Column[]>([
   { key: "ProductName", inputType: TextInput },
   { key: "Category", inputType: TextInput },
-  { key: "Price" , inputType: NumberInput},
+  { key: "Price", inputType: NumberInput },
   { key: "Stock", inputType: NumberInput },
 ]);
 
@@ -168,47 +179,27 @@ watch(
   { immediate: true }
 );
 
-function toggleSelectAll(event) {
-  selectedItems.value = event.target.checked
-    ? sortedItems.value.map((item) => item.id)
-    : [];
+function toggleSelectAll(event:Event) {
+  const target = event.target as HTMLInputElement;
+  selectedItems.value = target.checked ? sortedItems.value.map((item) => item.id).filter((id): id is string => id !== undefined) : [];
 }
 
-const deleteSelectedItems = async () => {
-  if (selectedItems.value.length === 0) {
-    Swal.fire("No items have been selected!", "", "info");
-    return;
-  }
-  Swal.fire({
-    title: "Are you sure you want to delete these items?",
-    text: `Delete ${selectedItems.value.length} items. This action cannot be undone!`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Delete!",
-    cancelButtonText: "Cancel",
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#3085d6",
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      selectedItems.value.forEach((productId) => {
-        productStore.deleteItems(productId);
-      });
-      selectedItems.value = [];
-      Swal.fire("Deleted!", "", "success");
-    }
-  });
+
+const deleteSelectedItems = () => {
+  productStore.deleteMultipleItems(selectedItems.value);
+  selectedItems.value = [];
 };
 
-function handleColumnSort(columnKey) {
+function handleColumnSort(columnKey: keyof Product) {
   productStore.toggleSort(columnKey);
 }
 
-const startEdit = (item) => {
+const startEdit = (item: Product) => {
   editingRow.value = item.id;
   editedItem.value = { ...item };
 };
 
-const saveEdit = async (itemId) => {
+const saveEdit = async (itemId: string) => {
   try {
     console.log("Updating item:", itemId, editedItem.value);
     await productStore.updateItem(itemId, editedItem.value); // Gọi API cập nhật
@@ -232,8 +223,8 @@ const closeDialog = () => {
   isDialogOpen.value = false;
 };
 
-const handleSave = async (updatedUser) => {
-  await productStore.updateItem(updatedUser.id, updatedUser);
+const handleSave = async (updatedProduct: Product) => {
+  await productStore.updateItem(updatedProduct.id, updatedProduct);
   selectedItems.value = [];
   closeDialog();
 };
@@ -244,4 +235,3 @@ watch(
   }
 );
 </script>
-    

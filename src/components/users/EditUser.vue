@@ -35,7 +35,7 @@
             :placeholder="'Enter ' + column.key"
             @blur="validateField(column.key)"
           />
-          
+
           <!-- Hiển thị lỗi nếu có -->
           <p v-if="errors[column.key]" class="text-red-500 text-sm mt-1">
             {{ errors[column.key] }}
@@ -63,30 +63,40 @@
   </Dialog>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from "vue";
 import { useDataStore } from "../../stores/dataStore";
 import TextInput from "../common/TextInput.vue";
 import Dialog from "../common/Dialog.vue";
 
-const props = defineProps({
-  modelValue: {
-    type: Object,
-    default: () => ({}),
-  },
-  isOpen: {
-    type: Boolean,
-    default: false,
-  },
-});
-const emit = defineEmits(["save", "close"]);
+interface User {
+  id?: string;
+  Name: string;
+  Position: string;
+  Status: "Active" | "Inactive" | "Pending";
+  Gender: "Male" | "Female";
+  Email: string;
+  Avatar: string;
+}
+interface Column {
+  key: keyof User;
+  inputType?: any;
+}
+const props = defineProps<{
+  modelValue: User;
+  isOpen: boolean;
+}>();
+const emit = defineEmits<{
+  (e: "save", user: User): void;
+  (e: "close"): void;
+}>();
 
 const userStore = useDataStore();
 
-const editableUser = ref({});
-const errors = ref({}); // Lưu lỗi validation
+const editableUser = ref<Partial<User>>({});
+const errors = ref<Partial<Record<keyof User, string>>>({}); // Lưu lỗi validation
 
-const columns = ref([
+const columns = ref<Column[]>([
   { key: "Name", inputType: TextInput },
   { key: "Position", inputType: TextInput },
   { key: "Status" },
@@ -105,7 +115,14 @@ watch(
 );
 
 // ✅ Hàm kiểm tra email hợp lệ
-function validateField(field) {
+function validateField(field: keyof User) {
+  // if (field === "Name") {
+  //   if (!editableUser.value.Name) {
+  //     errors.value.Name = "Name không được để trống";
+  //   } else {
+  //     delete errors.value.Name;
+  //   }
+  // }
   if (field === "Email") {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!editableUser.value.Email) {
@@ -119,7 +136,7 @@ function validateField(field) {
 }
 
 // ✅ Kiểm tra toàn bộ form trước khi submit
-async function handleSubmit() {
+ const  handleSubmit=async()=> {
   validateField("Email"); // Check lỗi trước khi submit
 
   if (Object.keys(errors.value).length > 0) {
@@ -133,7 +150,7 @@ async function handleSubmit() {
   }
 }
 
-function close() {
+const close=()=> {
   emit("close");
 }
 </script>
