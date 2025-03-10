@@ -136,7 +136,7 @@ function validateField(field: keyof User) {
 }
 
 // ✅ Kiểm tra toàn bộ form trước khi submit
- const  handleSubmit=async()=> {
+const handleSubmit = async () => {
   validateField("Email"); // Check lỗi trước khi submit
 
   if (Object.keys(errors.value).length > 0) {
@@ -148,9 +148,9 @@ function validateField(field: keyof User) {
   if (result !== false) {
     close();
   }
-}
+};
 
-const close=()=> {
+const close = () => {
   emit("close");
-}
+};
 </script>

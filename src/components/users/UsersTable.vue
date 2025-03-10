@@ -137,7 +137,7 @@ import { useDataStore } from "../../stores/dataStore";
 import Pagination from "../common/Pagination.vue";
 import { usePaginationStore } from "../../stores/paginationStore";
 interface User {
-  id: string;
+  id?: string;
   Name: string;
   Position: string;
   Status: "Active" | "Inactive" | "Pending";
@@ -152,7 +152,7 @@ const paginationStore = usePaginationStore();
 const { currentPage, pageSize } = storeToRefs(paginationStore);
 const { sortedItems, sortBy, sortOrder } = storeToRefs(userStore);
 
-//Diaglog & user State
+//Dialog & user State
 const isDialogOpen = ref<boolean>(false);
 const selectedUser = ref<User | Partial<User>>({});
 const selectedUsers = ref<string[]>([]);
@@ -214,7 +214,9 @@ const closeDialog = () => {
 };
 
 const handleSave = (updatedUser: User) => {
-  userStore.updateItem(updatedUser.id, updatedUser);
+  if (updatedUser.id) {
+    userStore.updateItem(updatedUser.id, updatedUser);
+  }
   closeDialog();
 };
 
