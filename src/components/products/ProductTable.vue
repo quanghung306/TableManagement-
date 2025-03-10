@@ -122,7 +122,7 @@
     <script setup>
 import { ref, computed, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
-import SearchInput from "../common/SearchInput.vue";
+import SearchInput from "../common/SearchInpt.vue";
 import { useDataStore } from "../../stores/dataStore";
 import Swal from "sweetalert2";
 import Pagination from "../common/Pagination.vue";
