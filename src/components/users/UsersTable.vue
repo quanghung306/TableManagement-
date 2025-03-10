@@ -134,7 +134,6 @@ import { storeToRefs } from "pinia";
 import SearchInput from "../common/SearchInput.vue";
 import EditUser from "./EditUser.vue";
 import { useDataStore } from "../../stores/dataStore";
-import Swal from "sweetalert2";
 import Pagination from "../common/Pagination.vue";
 import { usePaginationStore } from "../../stores/paginationStore";
 interface User {

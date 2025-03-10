@@ -6,7 +6,7 @@ const routes = [
   { 
     path: "/login", 
     component: () => import("../views/LoginView.vue"),
-    meta: { guestOnly: true }, // Chỉ dành cho khách
+    meta: { guestOnly: true }, // chưa đăng nhập
   },
   { 
     path: "/register", 
@@ -16,7 +16,7 @@ const routes = [
   {
     path: "/users",
     component: () => import("../views/UsersView.vue"),
-    meta: { requiresAuth: true }, // Chỉ dành cho user đã đăng nhập
+    meta: { requiresAuth: true }, //  đã đăng nhập
   },
   {
     path: "/product",

@@ -37,17 +37,18 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { usePaginationStore } from "../../stores/paginationStore";
+
 const paginationStore = usePaginationStore();
 const { currentPage, totalPages } = storeToRefs(paginationStore);
 const { setPage } = paginationStore;
 
-const goToPrevPage = () => {
+const goToPrevPage = (): void => {
   if (Number(currentPage.value) > 1) {
     setPage(Number(currentPage.value) - 1);
   }
 };
 
-const goToNextPage = () => {
+const goToNextPage = (): void => {
   if (Number(currentPage.value) < Number(totalPages.value)) {
     setPage(Number(currentPage.value) + 1);
   }

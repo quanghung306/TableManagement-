@@ -3,7 +3,7 @@ import { createPinia } from "pinia";
 import { plugin as FormKit, defaultConfig } from "@formkit/vue";
 import "@formkit/themes/genesis";
 import PrimeVue from "primevue/config";
-import Button from "primevue/button"
+import Button from "primevue/button";
 import router from "./router";
 
 import "./style.css";
