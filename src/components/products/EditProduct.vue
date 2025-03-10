@@ -84,7 +84,7 @@ watch(
 
 const isValidNumber = (value: any): boolean => !isNaN(value) && value !== "";
 
-const validateForm=(): boolean => {
+const validateForm = (): boolean => {
   if (
     !isValidNumber(editableProduct.value.Price) ||
     !isValidNumber(editableProduct.value.Stock)
@@ -93,9 +93,9 @@ const validateForm=(): boolean => {
     return false;
   }
   return true;
-}
+};
 
- const handleSubmit =async()=> {
+const handleSubmit = async () => {
   if (!validateForm()) return;
 
   const result = await productStore.saveItem(editableProduct.value as Product);
@@ -103,9 +103,9 @@ const validateForm=(): boolean => {
     Swal.fire("Success", "Item saved successfully!", "success");
     close();
   }
-}
+};
 
-const close=()=> {
+const close = () => {
   emit("close");
-}
+};
 </script>

@@ -234,7 +234,7 @@ const handleSave = async (updatedProduct: Product) => {
 watch(
   () => sortedItems.value,
   () => {
-    selectedItems.value = []; // Reset lại khi danh sách sản phẩm thay đổis
+    selectedItems.value = [];
   }
 );
 </script>

@@ -134,11 +134,10 @@ import { storeToRefs } from "pinia";
 import SearchInput from "../common/SearchInput.vue";
 import EditUser from "./EditUser.vue";
 import { useDataStore } from "../../stores/dataStore";
-import Swal from "sweetalert2";
 import Pagination from "../common/Pagination.vue";
 import { usePaginationStore } from "../../stores/paginationStore";
 interface User {
-  id: string;
+  id?: string;
   Name: string;
   Position: string;
   Status: "Active" | "Inactive" | "Pending";
@@ -215,7 +214,9 @@ const closeDialog = () => {
 };
 
 const handleSave = (updatedUser: User) => {
-  userStore.updateItem(updatedUser.id, updatedUser);
+  if (updatedUser.id) {
+    userStore.updateItem(updatedUser.id, updatedUser);
+  }
   closeDialog();
 };
 
