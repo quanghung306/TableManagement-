@@ -1,4 +1,4 @@
-<template>
+<template >
   <Dialog :isOpen="isOpen">
     <template #context>
       <h2 class="text-xl font-semibold mb-4">
@@ -9,9 +9,9 @@
           <label class="block text-gray-700 capitalize">{{ column.key }}</label>
           <component
             :is="column.inputType || 'input'"
-            v-model="editableUser[column.key]"
+            v-model="editableProduct[column.key]"
             class="border p-2 rounded w-full mt-1"
-            :placeholder="`Enter ${column.key}`"
+            :placeholder="'Enter ' + column.key"
           />
         </div>
         <div class="flex justify-end">
@@ -33,67 +33,69 @@
     </template>
   </Dialog>
 </template>
-
-<script setup lang="ts">
+<script setup>
 import { ref, watch } from "vue";
 import { useDataStore } from "../../stores/dataStore";
+import TextInput from "../common/TextInput.vue";
 import Dialog from "../common/Dialog.vue";
-import * as TextInput from "../common/TextInput.vue";
+import NumberInput from "../common/NumberInput.vue";
+import Swal from "sweetalert2";
 
-interface User {
-  id?: string;
-  ProductName: string;
-  Category: string;
-  Price: number;
-  Stock: number;
-}
-
-interface Column {
-  key: keyof User;
-  inputType?: any;
-}
-
-// Props & Emit
-const props = defineProps<{ modelValue: User; isOpen: boolean }>();
-const emit = defineEmits<{
-  save: [user: User];
-  close: [];
-}>();
-
-const userStore = useDataStore();
-
-// Trạng thái user có thể chỉnh sửa
-const editableUser = ref<User>({
-  ProductName: "",
-  Category: "",
-  Price: 0,
-  Stock: 0,
+const props = defineProps({
+  modelValue: Object,
+  isOpen: Boolean,
 });
+const emit = defineEmits(["save", "close"]);
 
-const columns: Column[] = [
+const productStore = useDataStore();
+const editableProduct  = ref({});
+const columns = ref([
   { key: "ProductName", inputType: TextInput },
   { key: "Category", inputType: TextInput },
-  { key: "Price", inputType: TextInput },
-  { key: "Stock", inputType: TextInput },
-];
+  { key: "Price", inputType: NumberInput },
+  { key: "Stock", inputType: NumberInput },
+]);
 
-// Đồng bộ `editableUser` khi `modelValue` thay đổi
 watch(
   () => props.modelValue,
   (newVal) => {
-    editableUser.value = newVal
-      ? { ...newVal }
-      : { ProductName: "", Category: "", Price: 0, Stock: 0 };
+    editableProduct.value = Object.assign({}, newVal || {});
   },
   { immediate: true }
 );
 
-// Xử lý submit
-const handleSubmit = async () => {
-  const result = await userStore.saveItem({ ...editableUser.value });
-  if (result !== false) close();
-};
+const isValidNumber = (value) => !isNaN(value) && value !== "";
 
-// Đóng Dialog
-const close = () => emit("close");
+function validateForm() {
+  if (
+    !isValidNumber(editableProduct.value.Price) ||
+    !isValidNumber(editableProduct.value.Stock)
+  ) {
+    Swal.fire("Error", "Price và Stock phải là số!", "error");
+    return false;
+  }
+  return true;
+}
+
+async function handleSubmit() {
+  if (!validateForm()) return ;
+
+  const result = await productStore.saveItem(editableProduct.value);
+  if (result !== false) {
+    Swal.fire("Success", "Item saved successfully!", "success");
+    close();
+  }
+}
+
+// async function handleSubmit() {
+//   const result = await productStore.saveItem({ ...editableProduct.value });
+
+//   console.log("🚀 ~ handleSubmit ~ result:", result);
+//   if (result !== false) {
+//     close();
+//   }
+// }
+function close() {
+  emit("close");
+}
 </script>
