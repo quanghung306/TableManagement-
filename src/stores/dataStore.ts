@@ -18,10 +18,12 @@ export const useDataStore = defineStore("data", () => {
   const searchQuery = ref<string>("");
   const apiURL = ref<string>("");
 
+  // Set the API URL
   const SetApi = (url: string) => {
     apiURL.value = url;
   };
 
+  // Fetch data from the API
   const fetchData = async () => {
     if (!apiURL.value) return;
     try {
@@ -41,7 +43,7 @@ export const useDataStore = defineStore("data", () => {
     }
   };
 
-  // Getter
+  // Getter to sort and Search items
   const sortedItems = computed<Item[]>(() => {
     let list = items.value;
     if (searchQuery.value) {
@@ -58,7 +60,7 @@ export const useDataStore = defineStore("data", () => {
     });
   });
 
-  // Actions
+  // Toggle sorting order
   const toggleSort = (columnKey: string) => {
     if (sortBy.value === columnKey) {
       sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
@@ -68,10 +70,12 @@ export const useDataStore = defineStore("data", () => {
     }
   };
 
+  // Set the search query
   const setSearchQuery = (query: string) => {
     searchQuery.value = query;
   };
 
+  // Save a new item or update an existing item
   const saveItem = async (newItem: Item): Promise<boolean> => {
     if (!apiURL.value) return false;
     try {
@@ -102,23 +106,57 @@ export const useDataStore = defineStore("data", () => {
     }
   };
 
-  const deleteItems = async (productId: string) => {
+  // Delete an item by its ID
+  const deleteItems = async (itemId: string) => {
     if (!apiURL.value) return;
     try {
-      const url = `${apiURL.value}/${productId}`;
-      const foundItem = items.value.find((item) => item.id === productId);
-      if (!foundItem) {
-        console.error("Delete Error: Item not found in local state");
-        return;
-      }
+      const url = `${apiURL.value}/${itemId}`;
       await axios.delete(url);
-      items.value = items.value.filter((item) => item.id !== productId);
+      items.value = items.value.filter((item) => item.id !== itemId);
     } catch (error) {
-      console.error("Delete Error:", error);
       Swal.fire("Failed to delete!", "", "error");
     }
   };
+  // Delete multiple items by their IDs
+  const deleteMultipleItems = async (selectedIds: string[]) => {
+    if (selectedIds.length === 0) {
+      Swal.fire("No items selected!", "", "info");
+      return;
+    }
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: `Delete ${selectedIds.length} items? This action cannot be undone!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Delete!",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+    });
+    if (!result.isConfirmed) return; 
+    Swal.fire({
+      title: "Deleting...",
+      text: "Please wait while deleting items!",
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
 
+    try {
+      for (const id of selectedIds) {
+        await new Promise((resolve) => setTimeout(resolve, 300)); // 🔥 Delay nhẹ
+        await axios.delete(`${apiURL.value}/${id}`);
+        items.value = items.value.filter((item) => item.id !== id);
+      }
+      await fetchData(); // 🔄 Fetch lại danh sách
+      Swal.fire("Deleted!", "", "success");
+    } catch (error) {
+      Swal.fire("Failed to delete!", "Something went wrong", "error");
+    }
+  };
+
+  // Update an item by its ID
   const updateItem = async (id: string, updatedData: Partial<Item>) => {
     try {
       const response = await axios.put<Item>(
@@ -143,6 +181,7 @@ export const useDataStore = defineStore("data", () => {
     setSearchQuery,
     saveItem,
     deleteItems,
+    deleteMultipleItems,
     fetchData,
     updateItem,
   };

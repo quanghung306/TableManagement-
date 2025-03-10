@@ -131,7 +131,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
-import SearchInput from "../common/SearchInpt.vue";
+import SearchInput from "../common/SearchInput.vue";
 import EditUser from "./EditUser.vue";
 import { useDataStore } from "../../stores/dataStore";
 import Swal from "sweetalert2";
@@ -196,29 +196,10 @@ const toggleSelectAll = (event: Event) => {
 };
 
 const deleteSelectedUsers = () => {
-  if (selectedUsers.value.length === 0) {
-    Swal.fire("No users have been selected!", "", "info");
-    return;
-  }
-  Swal.fire({
-    title: "Are you sure you want to delete these users?",
-    text: `Delete ${selectedUsers.value.length} user. This action cannot be undone!`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Delete!",
-    cancelButtonText: "Cancel",
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#3085d6",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      selectedUsers.value.forEach((userId) => {
-        userStore.deleteItems(userId);
-      });
-      selectedUsers.value = [];
-      Swal.fire("Deleted!", "", "success");
-    }
-  });
+  userStore.deleteMultipleItems(selectedUsers.value);
+  selectedUsers.value = [];
 };
+
 const openEditDialog = (user: User) => {
   selectedUser.value = { ...user };
   isDialogOpen.value = true;
@@ -255,4 +236,3 @@ const getStatusClass = (status: User["Status"]) => {
   }
 };
 </script>
-
