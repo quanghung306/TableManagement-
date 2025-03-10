@@ -179,11 +179,14 @@ watch(
   { immediate: true }
 );
 
-function toggleSelectAll(event:Event) {
+function toggleSelectAll(event: Event) {
   const target = event.target as HTMLInputElement;
-  selectedItems.value = target.checked ? sortedItems.value.map((item) => item.id).filter((id): id is string => id !== undefined) : [];
+  selectedItems.value = target.checked
+    ? sortedItems.value
+        .map((item) => item.id)
+        .filter((id): id is string => id !== undefined)
+    : [];
 }
-
 
 const deleteSelectedItems = () => {
   productStore.deleteMultipleItems(selectedItems.value);

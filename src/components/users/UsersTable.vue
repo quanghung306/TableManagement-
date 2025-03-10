@@ -153,7 +153,7 @@ const paginationStore = usePaginationStore();
 const { currentPage, pageSize } = storeToRefs(paginationStore);
 const { sortedItems, sortBy, sortOrder } = storeToRefs(userStore);
 
-//Diaglog & user State
+//Dialog & user State
 const isDialogOpen = ref<boolean>(false);
 const selectedUser = ref<User | Partial<User>>({});
 const selectedUsers = ref<string[]>([]);
