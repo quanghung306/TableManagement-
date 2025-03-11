@@ -14,11 +14,18 @@ const updateValue = (event: Event) => {
     console.warn("Giá trị không hợp lệ:", target.value);
   }
 };
+const blockInvalidChars = (event: KeyboardEvent) => {
+  if (["e", "E", "+", "-"].includes(event.key)) {
+    event.preventDefault();
+  }
+};
 </script>
 <template>
   <input
+    type="number" 
     :value="modelValue"
     @input="updateValue"
+    @keydown="blockInvalidChars"
     class="border p-2 rounded w-full"
     placeholder="Enter number"
   />

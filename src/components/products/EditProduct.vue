@@ -56,7 +56,7 @@ interface Column {
 }
 
 const props = defineProps<{
-  modelValue: Product;
+  modelValue: Product | String[] ;
   isOpen: boolean;
 }>();
 
@@ -77,7 +77,7 @@ const columns = ref<Column[]>([
 watch(
   () => props.modelValue,
   (newVal) => {
-    editableProduct.value = newVal ? { ...newVal } : {};
+    editableProduct.value = Array.isArray(newVal) ? {} : { ...newVal };
   },
   { immediate: true }
 );
