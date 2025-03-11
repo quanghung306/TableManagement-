@@ -4,19 +4,23 @@
     :class="isOpen ? 'w-64' : 'w-16'"
   >
     <!-- Toggle Button -->
-    <div class="p-4 flex items-center bg-gray-100 border-b border-gray-300 h-16">
+    <div
+      class="p-4 flex items-center bg-gray-100 border-b border-gray-300 h-16"
+    >
       <div class="flex items-center gap-3 flex-1">
         <i class="pi pi-microsoft"></i>
-        <h1 v-if="isOpen" class="text-2xl font-bold text-gray-800">Dashboard</h1>
+        <h1 v-if="isOpen" class="text-2xl font-bold text-gray-800">
+          Dashboard
+        </h1>
       </div>
-      <button @click="toggleSidebar" class="focus:outline-none">
+      <button @click="toggleSidebar" class="focus:outline-none relative">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="w-6 h-6 text-gray-800 cursor-pointer ml-3 transition duration-300"
+          class="w-7 h-7 text-gray-800 cursor-pointer transition duration-300 absolute -translate-y-1/2 left-1"
           :class="isOpen ? 'rotate-180' : ''"
         >
           <path
@@ -38,10 +42,18 @@
             class="flex items-center px-4 py-3 space-x-3 hover:bg-gray-300 transition-colors duration-200"
           >
             <i
-              :class="['pi', item.icon, 'transition-all duration-200', { 'text-black scale-100': route.path === item.path }]"
+              :class="[
+                'pi',
+                item.icon,
+                'transition-all duration-200',
+                { 'text-black scale-100': route.path === item.path },
+              ]"
               style="font-size: 1.5rem"
             />
-            <p v-show="isOpen" class="text-lg transition-all duration-200 whitespace-nowrap">
+            <p
+              v-show="isOpen"
+              class="text-lg transition-all duration-200 whitespace-nowrap"
+            >
               {{ item.name }}
             </p>
           </router-link>
