@@ -197,7 +197,7 @@ function handleColumnSort(columnKey: keyof Product) {
   productStore.toggleSort(columnKey);
 }
 
-const startEdit = (item: Product) => {
+const startEdit = (item: any) => {
   editingRow.value = item.id;
   editedItem.value = { ...item };
 };

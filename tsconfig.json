@@ -10,6 +10,8 @@
       "forceConsistentCasingInFileNames": true,
       "types": ["vite/client"],
       "allowJs": true,
+      "allowSyntheticDefaultImports": true,
+
     },
     "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.vue"]
   }

@@ -83,7 +83,7 @@ interface Column {
   inputType?: any;
 }
 const props = defineProps<{
-  modelValue: User;
+  modelValue: User |any ;
   isOpen: boolean;
 }>();
 const emit = defineEmits<{
