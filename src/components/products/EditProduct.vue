@@ -2,7 +2,7 @@
   <Dialog :isOpen="isOpen">
     <template #context>
       <h2 class="text-xl font-semibold mb-4">
-        {{ modelValue.id ? "Edit Product" : "Add Product" }}
+        {{"Add Product" }}
       </h2>
       <form @submit.prevent="handleSubmit">
         <div v-for="column in columns" :key="column.key" class="mb-4">
@@ -43,7 +43,7 @@ import NumberInput from "../common/NumberInput.vue";
 import Swal from "sweetalert2";
 
 interface Product {
-  id: string;
+  id?: string;
   ProductName: string;
   Category: string;
   Price: number;

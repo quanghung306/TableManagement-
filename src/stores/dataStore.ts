@@ -60,7 +60,7 @@ export const useDataStore = defineStore("data", () => {
     });
   });
 
-  // Toggle sorting order
+ //Actions
   const toggleSort = (columnKey: string) => {
     if (sortBy.value === columnKey) {
       sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
@@ -70,12 +70,9 @@ export const useDataStore = defineStore("data", () => {
     }
   };
 
-  // Set the search query
   const setSearchQuery = (query: string) => {
     searchQuery.value = query;
   };
-
-  // Save a new item or update an existing item
   const saveItem = async (newItem: Item): Promise<boolean> => {
     if (!apiURL.value) return false;
     try {
@@ -106,7 +103,6 @@ export const useDataStore = defineStore("data", () => {
     }
   };
 
-  // Delete an item by its ID
   const deleteItems = async (itemId: string) => {
     if (!apiURL.value) return;
     try {
@@ -117,7 +113,6 @@ export const useDataStore = defineStore("data", () => {
       Swal.fire("Failed to delete!", "", "error");
     }
   };
-  // Delete multiple items by their IDs
   const deleteMultipleItems = async (selectedIds: string[]) => {
     if (selectedIds.length === 0) {
       Swal.fire("No items selected!", "", "info");
@@ -156,7 +151,6 @@ export const useDataStore = defineStore("data", () => {
     }
   };
 
-  // Update an item by its ID
   const updateItem = async (id: string, updatedData: Partial<Item>) => {
     try {
       const response = await axios.put<Item>(
