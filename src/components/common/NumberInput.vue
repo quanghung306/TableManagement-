@@ -1,3 +1,15 @@
+
+<template>
+  <input
+    type="number" 
+    :value="modelValue"
+    @input="updateValue"
+    @keydown="blockInvalidChars"
+    class="border p-2 rounded w-full"
+    placeholder="Enter number"
+  />
+</template>
+
 <script setup lang="ts">
 defineProps<{ modelValue: number }>();
 const emit = defineEmits<{
@@ -20,13 +32,3 @@ const blockInvalidChars = (event: KeyboardEvent) => {
   }
 };
 </script>
-<template>
-  <input
-    type="number" 
-    :value="modelValue"
-    @input="updateValue"
-    @keydown="blockInvalidChars"
-    class="border p-2 rounded w-full"
-    placeholder="Enter number"
-  />
-</template>
