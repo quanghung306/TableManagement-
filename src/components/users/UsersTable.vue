@@ -13,8 +13,8 @@
           Delete Selected
         </button>
         <button
-          @click="openAddDialog"
-          class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer"
+        @click="openAddDialog"
+        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded-md shadow-md transition duration-150 ease-in-out cursor-pointer"
         >
           <i class="pi pi-user-plus" style="font-size: 1rem"></i>
         </button>
@@ -131,7 +131,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from "vue";
 import { storeToRefs } from "pinia";
-import SearchInput from "../common/SearchInput.vue";
+import  SearchInput  from "../common/SearchInput.vue";
 import EditUser from "./EditUser.vue";
 import { useDataStore } from "../../stores/dataStore";
 import Pagination from "../common/Pagination.vue";
@@ -174,8 +174,12 @@ const paginatedUsers = computed<User[]>(() => {
   return sortedItems.value.slice(start, start + pageSize.value) as User[];
 });
 //gọi API
+// onMounted(() => {
+//   userStore.SetApi("https://660bb670ccda4cbc75dd7d2f.mockapi.io/users");
+//   userStore.fetchData();
+// });
 onMounted(() => {
-  userStore.SetApi("https://660bb670ccda4cbc75dd7d2f.mockapi.io/users");
+  userStore.SetApi("http://localhost:8000/api/users");
   userStore.fetchData();
 });
 watch(

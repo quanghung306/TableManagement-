@@ -131,7 +131,7 @@ import EditProduct from "./EditProduct.vue";
 import NumberInput from "../common/NumberInput.vue";
 import TextInput from "../common/TextInput.vue";
 interface Product {
-  id: string;
+  id?: string;
   ProductName: string;
   Category: string;
   Price: number;
@@ -227,7 +227,9 @@ const closeDialog = () => {
 };
 
 const handleSave = async (updatedProduct: Product) => {
-  await productStore.updateItem(updatedProduct.id, updatedProduct);
+  if(updatedProduct.id){
+    productStore.updateItem(updatedProduct.id, updatedProduct);
+  }
   selectedItems.value = [];
   closeDialog();
 };
