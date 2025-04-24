@@ -77,7 +77,7 @@ const route = useRoute();
 const isOpen = ref<boolean>(true);
 
 const menuItems: MenuItem[] = [
-  { name: "Users Management", path: "/users", icon: "pi-users" },
+  { name: "Custormers Management", path: "/users", icon: "pi-users" },
   { name: "Product Management", path: "/product", icon: "pi-box" },
 ];
 

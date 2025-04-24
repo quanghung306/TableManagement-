@@ -166,8 +166,12 @@ const paginatedItems = computed(() => {
   return sortedItems.value.slice(start, start + pageSize.value);
 });
 
+// onMounted(() => {
+//   productStore.SetApi("https://660bb670ccda4cbc75dd7d2f.mockapi.io/products");
+//   productStore.fetchData();
+// });
 onMounted(() => {
-  productStore.SetApi("https://660bb670ccda4cbc75dd7d2f.mockapi.io/products");
+  productStore.SetApi("http://localhost:8000/api/prodcuts");
   productStore.fetchData();
 });
 

@@ -179,7 +179,7 @@ const paginatedUsers = computed<User[]>(() => {
 //   userStore.fetchData();
 // });
 onMounted(() => {
-  userStore.SetApi("http://localhost:8000/api/users");
+  userStore.SetApi("http://localhost:8000/api/custormers");
   userStore.fetchData();
 });
 watch(

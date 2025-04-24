@@ -15,14 +15,14 @@
       >
         <FormKit
           type="text"
-          name="username"
+          name="Username"
           label="Username"
           placeholder="Your username"
           validation="required"
         />
         <FormKit
           type="password"
-          name="password"
+          name="Password"
           label="Password"
           validation="required|length:6|matches:/[^a-zA-Z]/"
           :validation-messages="{
@@ -32,10 +32,10 @@
         />
         <FormKit
           type="password"
-          name="password_confirm"
+          name="Password_confirmation"
           label="Confirm password"
           placeholder="Confirm password"
-          validation="required|confirm"
+          validation="required|confirm:Password" 
         />
         <FormKit
           type="submit"
@@ -77,9 +77,9 @@ import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/authStore";
 
 interface RegisterForm {
-  username: string;
-  password: string;
-  password_confirm: string;
+  Username: string;
+  Password: string;
+  Password_confirmation: string;
 }
 
 const authStore = useAuthStore();

@@ -14,7 +14,7 @@
         <FormKit
           type="text"
           label="Username"
-          name="username"
+          name="Username"
           placeholder="Enter your username"
           validation="required"
           label-class="text-gray-700 font-serif"
@@ -23,7 +23,7 @@
         <FormKit
           type="password"
           label="Password"
-          name="password"
+          name="Password"
           placeholder="Enter your password"
           validation="required"
           label-class="text-gray-700"
@@ -83,15 +83,17 @@
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "../stores/authStore";
 import type { FormKitNode } from "@formkit/core";
+import { watchEffect } from "vue";
+import router from "../router";
 
 const authStore = useAuthStore();
 const { isLoading } = storeToRefs(authStore);
 
 interface LoginForm {
-  username: string;
-  password: string;
-  rememberMe?: boolean;
+  Username: string; 
+  Password: string;
 }
+
 
 const handleLogin = (formData: LoginForm) => {
   authStore.login(formData);
