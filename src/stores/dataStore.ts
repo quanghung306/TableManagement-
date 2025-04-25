@@ -140,11 +140,11 @@ export const useDataStore = defineStore("data", () => {
 
     try {
       for (const id of selectedIds) {
-        await new Promise((resolve) => setTimeout(resolve, 300)); // 🔥 Delay nhẹ
+        await new Promise((resolve) => setTimeout(resolve, 300)); 
         await axios.delete(`${apiURL.value}/${id}`);
         items.value = items.value.filter((item) => item.id !== id);
       }
-      await fetchData(); // 🔄 Fetch lại danh sách
+      await fetchData(); 
       Swal.fire("Deleted!", "", "success");
     } catch (error) {
       Swal.fire("Failed to delete!", "Something went wrong", "error");

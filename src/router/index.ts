@@ -35,14 +35,24 @@ const router = createRouter({
 });
 
 //  Navigation Guard kiểm tra quyền truy cập
-router.beforeEach((to) => {
-  const authStore = useAuthStore(); // Lấy store trong mỗi lần điều hướng
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    return "/login"; // Chuyển về trang login nếu chưa đăng nhập
+router.beforeEach(async (to, from, next) => {
+  const auth = useAuthStore();
+  
+  // Khởi tạo trạng thái đăng nhập
+  await auth.initializeAuth();
+  
+  // Kiểm tra route yêu cầu đăng nhập
+  if (to.meta.requiresAuth && !auth.isAuthenticated) {
+    return next('/login');
   }
-  if (to.meta.guestOnly && authStore.isAuthenticated) {
-    return "/users"; // Nếu đã đăng nhập, chặn truy cập trang login/register
+  
+  // Kiểm tra route chỉ dành cho khách
+  if (to.meta.guestOnly && auth.isAuthenticated) {
+    return next('/users');
   }
+  
+  next();
 });
+
 
 export default router;

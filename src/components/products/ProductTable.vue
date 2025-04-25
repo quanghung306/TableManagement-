@@ -131,7 +131,7 @@ import EditProduct from "./EditProduct.vue";
 import NumberInput from "../common/NumberInput.vue";
 import TextInput from "../common/TextInput.vue";
 interface Product {
-  id: string;
+  id?: string;
   ProductName: string;
   Category: string;
   Price: number;
@@ -166,8 +166,12 @@ const paginatedItems = computed(() => {
   return sortedItems.value.slice(start, start + pageSize.value);
 });
 
+// onMounted(() => {
+//   productStore.SetApi("https://660bb670ccda4cbc75dd7d2f.mockapi.io/products");
+//   productStore.fetchData();
+// });
 onMounted(() => {
-  productStore.SetApi("https://660bb670ccda4cbc75dd7d2f.mockapi.io/products");
+  productStore.SetApi("http://localhost:8000/api/prodcuts");
   productStore.fetchData();
 });
 
@@ -227,7 +231,9 @@ const closeDialog = () => {
 };
 
 const handleSave = async (updatedProduct: Product) => {
-  await productStore.updateItem(updatedProduct.id, updatedProduct);
+  if(updatedProduct.id){
+    productStore.updateItem(updatedProduct.id, updatedProduct);
+  }
   selectedItems.value = [];
   closeDialog();
 };
