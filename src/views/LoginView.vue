@@ -83,8 +83,7 @@
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "../stores/authStore";
 import type { FormKitNode } from "@formkit/core";
-import { watchEffect } from "vue";
-import router from "../router";
+
 
 const authStore = useAuthStore();
 const { isLoading } = storeToRefs(authStore);

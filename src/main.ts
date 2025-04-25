@@ -10,6 +10,7 @@ import "./style.css";
 
 import App from "./App.vue";
 
+
 const pinia = createPinia();
 
 createApp(App)
@@ -19,3 +20,4 @@ createApp(App)
   .use(pinia)
   .component("Button", Button)
   .mount("#app");
+  

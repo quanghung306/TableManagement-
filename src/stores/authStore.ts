@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import router from "../router";
-import api from "../data/axios";
+import { api, ensureCsrfToken } from "../data/axios";
 
 interface User {
   id: number;
@@ -12,20 +12,32 @@ export const useAuthStore = defineStore("auth", () => {
   const user = ref<User | null>(null);
   const isLoading = ref(false);
   const errorMessage = ref("");
+  const token = ref<string | null>(localStorage.getItem("token"));
 
-  const isAuthenticated = computed(() => !!user.value);
+  // Kiểm tra trạng thái xác thực
+  const isAuthenticated = computed(() => !!token.value);
 
-  // Lấy thông tin user đang đăng nhập
+  // Lấy thông tin người dùng
   const fetchUser = async () => {
     try {
       const response = await api.get("/auth/user");
       user.value = response.data;
     } catch (error) {
-      user.value = null;
+      // clearAuthData();
+
+      console.error("Fetch user error:", error);
     }
   };
 
-  // Đăng ký tài khoản
+  // // Xóa dữ liệu xác thực
+  const clearAuthData = () => {
+    user.value = null;
+    token.value = null;
+    localStorage.removeItem("token");
+    delete api.defaults.headers.common["Authorization"];
+  };
+
+  // Đăng ký người dùng
   const register = async (formData: {
     Username: string;
     Password: string;
@@ -34,12 +46,20 @@ export const useAuthStore = defineStore("auth", () => {
     isLoading.value = true;
     errorMessage.value = "";
     try {
+      await ensureCsrfToken();
       const response = await api.post("/auth/register", formData);
-      
-      localStorage.setItem('token', response.data.token);
+
+      // Lưu token sau khi đăng ký nếu API trả về
+      if (response.data.token) {
+        token.value = response.data.token;
+        localStorage.setItem("token", response.data.token);
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${response.data.token}`;
+      }
+
       user.value = response.data.user;
-      
-      router.push("/users");
+      router.push("/login");
     } catch (err: any) {
       errorMessage.value = err.response?.data?.message || "Đăng ký thất bại";
     } finally {
@@ -47,17 +67,22 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  // Đăng nhập
+  // Đăng nhập người dùng
   const login = async (formData: { Username: string; Password: string }) => {
     isLoading.value = true;
     errorMessage.value = "";
     try {
+      await ensureCsrfToken();
       const response = await api.post("/auth/login", formData);
-      
-      // Lưu token và thông tin user
-      localStorage.setItem('token', response.data.token);
+
+      // Lưu token và cấu hình axios
+      token.value = response.data.token;
+      localStorage.setItem("token", response.data.token);
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.token}`;
+
       user.value = response.data.user;
-      
       router.push("/users");
     } catch (err: any) {
       errorMessage.value = err.response?.data?.message || "Đăng nhập thất bại";
@@ -66,38 +91,46 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  // Đăng xuất
+  // Đăng xuất người dùng
   const logout = async () => {
     isLoading.value = true;
     try {
+      await ensureCsrfToken();
+
+      // Thêm token vào header nếu chưa có
+      if (token.value && !api.defaults.headers.common["Authorization"]) {
+        api.defaults.headers.common["Authorization"] = `Bearer ${token.value}`;
+      }
+
       await api.post("/logout");
-      
-      // Xóa dữ liệu người dùng
-      localStorage.removeItem('token');
-      user.value = null;
-      document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+      // Xóa dữ liệu và chuyển hướng
+      clearAuthData();
       router.push("/login");
-    } catch (err) {
-      console.error("Lỗi khi đăng xuất:", err);
+    } catch (err: any) {
+      console.error("Logout error:", err);
+
+      // Dù lỗi vẫn clear dữ liệu local
+      clearAuthData();
+      router.push("/login");
+
+      errorMessage.value = err.response?.data?.message || "Đăng xuất thất bại";
     } finally {
       isLoading.value = false;
     }
   };
 
-  // Kiểm tra đăng nhập 
+  // Khởi tạo xác thực khi load app
   const initializeAuth = async () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        await fetchUser();
-      } catch (error) {
-        localStorage.removeItem('token');
-      }
+    if (token.value) {
+      api.defaults.headers.common["Authorization"] = `Bearer ${token.value}`;
+      await fetchUser();
     }
   };
 
   return {
     user,
+    token,
     isAuthenticated,
     isLoading,
     errorMessage,
