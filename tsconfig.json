@@ -8,8 +8,7 @@
       "esModuleInterop": true,
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
-      "types": ["vite/client"],
-      "allowJs": true,
+      "outDir": "./dist",
       "allowSyntheticDefaultImports": true,
 
     },

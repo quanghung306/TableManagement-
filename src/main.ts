@@ -5,6 +5,7 @@ import "@formkit/themes/genesis";
 import PrimeVue from "primevue/config";
 import Button from "primevue/button";
 import router from "./router";
+import i18n from "./i18n";
 
 import "./style.css";
 
@@ -18,6 +19,7 @@ createApp(App)
   .use(router)
   .use(FormKit, defaultConfig)
   .use(pinia)
+  .use(i18n)
   .component("Button", Button)
   .mount("#app");
   

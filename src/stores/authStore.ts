@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import router from "../router";
+import { useI18n } from 'vue-i18n'
 import { api, ensureCsrfToken } from "../data/axios";
 
 interface User {
@@ -10,9 +11,11 @@ interface User {
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref<User | null>(null);
+  console.log("🚀 ~ useAuthStore ~ user:", user)
   const isLoading = ref(false);
   const errorMessage = ref("");
   const token = ref<string | null>(localStorage.getItem("token"));
+  const { t } = useI18n();
 
   // Kiểm tra trạng thái xác thực
   const isAuthenticated = computed(() => !!token.value);
@@ -29,7 +32,6 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  // // Xóa dữ liệu xác thực
   const clearAuthData = () => {
     user.value = null;
     token.value = null;
@@ -49,7 +51,7 @@ export const useAuthStore = defineStore("auth", () => {
       await ensureCsrfToken();
       const response = await api.post("/auth/register", formData);
 
-      // Lưu token sau khi đăng ký nếu API trả về
+
       if (response.data.token) {
         token.value = response.data.token;
         localStorage.setItem("token", response.data.token);
@@ -61,7 +63,7 @@ export const useAuthStore = defineStore("auth", () => {
       user.value = response.data.user;
       router.push("/login");
     } catch (err: any) {
-      errorMessage.value = err.response?.data?.message || "Đăng ký thất bại";
+      errorMessage.value = err.response?.data?.message || t('register_failed');
     } finally {
       isLoading.value = false;
     }
@@ -85,7 +87,7 @@ export const useAuthStore = defineStore("auth", () => {
       user.value = response.data.user;
       router.push("/users");
     } catch (err: any) {
-      errorMessage.value = err.response?.data?.message || "Đăng nhập thất bại";
+      errorMessage.value = err.response?.data?.message || t('login_failed');
     } finally {
       isLoading.value = false;
     }
@@ -114,7 +116,7 @@ export const useAuthStore = defineStore("auth", () => {
       clearAuthData();
       router.push("/login");
 
-      errorMessage.value = err.response?.data?.message || "Đăng xuất thất bại";
+      errorMessage.value = err.response?.data?.message || t('logout_failed');
     } finally {
       isLoading.value = false;
     }
