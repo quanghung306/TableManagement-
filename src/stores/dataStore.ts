@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useI18n } from "vue-i18n";
 
 interface Item {
   id?: string;
@@ -11,25 +12,24 @@ interface Item {
 }
 
 export const useDataStore = defineStore("data", () => {
-  // State
   const items = ref<Item[]>([]);
   const sortBy = ref<string>("");
   const sortOrder = ref<"asc" | "desc">("asc");
   const searchQuery = ref<string>("");
   const apiURL = ref<string>("");
 
-  // Set the API URL
+  const { t } = useI18n(); // dùng i18n nè
+
   const SetApi = (url: string) => {
     apiURL.value = url;
   };
 
-  // Fetch data from the API
   const fetchData = async () => {
     if (!apiURL.value) return;
     try {
       Swal.fire({
-        title: "Loading...",
-        text: "Loading data, please wait!",
+        title: t("loading"),
+        text: t("loadingDataPleaseWait"),
         allowOutsideClick: false,
         didOpen: () => {
           Swal.showLoading();
@@ -39,11 +39,10 @@ export const useDataStore = defineStore("data", () => {
       items.value = response.data || [];
       Swal.close();
     } catch (error) {
-      Swal.fire("Error loading data!!", "", "error");
+      Swal.fire(t("errorLoadingData"), "", "error");
     }
   };
 
-  // Getter to sort and Search items
   const sortedItems = computed<Item[]>(() => {
     let list = items.value;
     if (searchQuery.value) {
@@ -60,7 +59,6 @@ export const useDataStore = defineStore("data", () => {
     });
   });
 
- //Actions
   const toggleSort = (columnKey: string) => {
     if (sortBy.value === columnKey) {
       sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
@@ -73,14 +71,15 @@ export const useDataStore = defineStore("data", () => {
   const setSearchQuery = (query: string) => {
     searchQuery.value = query;
   };
+
   const saveItem = async (newItem: Item): Promise<boolean> => {
     if (!apiURL.value) return false;
     try {
       if (!newItem.Name && !newItem.ProductName) {
         Swal.fire({
           icon: "error",
-          title: "Oops...",
-          text: "Please enter complete information!",
+          title: t("oops"),
+          text: t("pleaseEnterCompleteInfo"),
         });
         return false;
       }
@@ -90,15 +89,15 @@ export const useDataStore = defineStore("data", () => {
         items.value = items.value.map((item) =>
           item.id === newItem.id ? newItem : item
         );
-        Swal.fire("Update Successfully!", "", "success");
+        Swal.fire(t("updateSuccessfully"), "", "success");
       } else {
         const response = await axios.post<Item>(apiURL.value, newItem);
         items.value.push(response.data);
-        Swal.fire("Added Successfully!", "", "success");
+        Swal.fire(t("addedSuccessfully"), "", "success");
       }
       return true;
     } catch (error) {
-      Swal.fire({ icon: "error", title: "Oops...", text: "Can't save item!" });
+      Swal.fire({ icon: "error", title: t("oops"), text: t("cantSaveItem") });
       return false;
     }
   };
@@ -110,28 +109,29 @@ export const useDataStore = defineStore("data", () => {
       await axios.delete(url);
       items.value = items.value.filter((item) => item.id !== itemId);
     } catch (error) {
-      Swal.fire("Failed to delete!", "", "error");
+      Swal.fire(t("failedToDelete"), "", "error");
     }
   };
+
   const deleteMultipleItems = async (selectedIds: string[]) => {
     if (selectedIds.length === 0) {
-      Swal.fire("No items selected!", "", "info");
+      Swal.fire(t("noItemsSelected"), "", "info");
       return;
     }
     const result = await Swal.fire({
-      title: "Are you sure?",
-      text: `Delete ${selectedIds.length} items? This action cannot be undone!`,
+      title: t("areYouSure"),
+      text: t("deleteItemsConfirm", { count: selectedIds.length }),
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Delete!",
-      cancelButtonText: "Cancel",
+      confirmButtonText: t("delete"),
+      cancelButtonText: t("cancel"),
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
     });
-    if (!result.isConfirmed) return; 
+    if (!result.isConfirmed) return;
     Swal.fire({
-      title: "Deleting...",
-      text: "Please wait while deleting items!",
+      title: t("deleting"),
+      text: t("pleaseWaitWhileDeleting"),
       allowOutsideClick: false,
       didOpen: () => {
         Swal.showLoading();
@@ -140,14 +140,14 @@ export const useDataStore = defineStore("data", () => {
 
     try {
       for (const id of selectedIds) {
-        await new Promise((resolve) => setTimeout(resolve, 300)); 
+        await new Promise((resolve) => setTimeout(resolve, 300));
         await axios.delete(`${apiURL.value}/${id}`);
         items.value = items.value.filter((item) => item.id !== id);
       }
-      await fetchData(); 
-      Swal.fire("Deleted!", "", "success");
+      await fetchData();
+      Swal.fire(t("deletedSuccessfully"), "", "success");
     } catch (error) {
-      Swal.fire("Failed to delete!", "Something went wrong", "error");
+      Swal.fire(t("failedToDelete"), t("somethingWentWrong"), "error");
     }
   };
 
