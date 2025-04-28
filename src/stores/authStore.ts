@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import router from "../router";
-import { useI18n } from 'vue-i18n'
+import { useI18n } from "vue-i18n";
 import { api, ensureCsrfToken } from "../data/axios";
 
 interface User {
@@ -11,7 +11,7 @@ interface User {
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref<User | null>(null);
-  console.log("🚀 ~ useAuthStore ~ user:", user)
+  console.log("🚀 ~ useAuthStore ~ user:", user);
   const isLoading = ref(false);
   const errorMessage = ref("");
   const token = ref<string | null>(localStorage.getItem("token"));
@@ -19,15 +19,14 @@ export const useAuthStore = defineStore("auth", () => {
 
   // Kiểm tra trạng thái xác thực
   const isAuthenticated = computed(() => !!token.value);
-
+  
   // Lấy thông tin người dùng
   const fetchUser = async () => {
     try {
       const response = await api.get("/auth/user");
       user.value = response.data;
     } catch (error) {
-      // clearAuthData();
-
+      clearAuthData();
       console.error("Fetch user error:", error);
     }
   };
@@ -36,6 +35,7 @@ export const useAuthStore = defineStore("auth", () => {
     user.value = null;
     token.value = null;
     localStorage.removeItem("token");
+    localStorage.removeItem("locale");
     delete api.defaults.headers.common["Authorization"];
   };
 
@@ -51,7 +51,6 @@ export const useAuthStore = defineStore("auth", () => {
       await ensureCsrfToken();
       const response = await api.post("/auth/register", formData);
 
-
       if (response.data.token) {
         token.value = response.data.token;
         localStorage.setItem("token", response.data.token);
@@ -63,7 +62,7 @@ export const useAuthStore = defineStore("auth", () => {
       user.value = response.data.user;
       router.push("/login");
     } catch (err: any) {
-      errorMessage.value = err.response?.data?.message || t('register_failed');
+      errorMessage.value = err.response?.data?.message || t("register_failed");
     } finally {
       isLoading.value = false;
     }
@@ -85,9 +84,10 @@ export const useAuthStore = defineStore("auth", () => {
       ] = `Bearer ${response.data.token}`;
 
       user.value = response.data.user;
+      console.log("🚀 ~ login ~ user.value:", user.value?.Username)
       router.push("/users");
     } catch (err: any) {
-      errorMessage.value = err.response?.data?.message || t('login_failed');
+      errorMessage.value = err.response?.data?.message || t("login_failed");
     } finally {
       isLoading.value = false;
     }
@@ -116,7 +116,7 @@ export const useAuthStore = defineStore("auth", () => {
       clearAuthData();
       router.push("/login");
 
-      errorMessage.value = err.response?.data?.message || t('logout_failed');
+      errorMessage.value = err.response?.data?.message || t("logout_failed");
     } finally {
       isLoading.value = false;
     }

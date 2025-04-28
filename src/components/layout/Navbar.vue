@@ -7,10 +7,10 @@
           type="button" 
           @click="toggleLanguageMenu" 
           class="p-button-text p-button-plain"
-          :aria-label="$t('language_selector.aria_label')"
-          v-tooltip.top="$t('language_selector.tooltip')"
-        >
-          <div class="flex items-center gap-2">
+          :aria-label="$t('language_selector')"
+          >
+          <!-- v-tooltip.top="$t('language_selector')" -->
+          <div class="flex items-center gap-2 ">
             <img 
               :alt="getLanguageName(selectedLanguage)" 
               :src="getLanguageFlag(selectedLanguage)" 
@@ -29,7 +29,7 @@
             content: { class: 'p-2' }
           }"
         >
-          <div class="flex flex-col gap-1 min-w-[120px]">
+          <div class="flex flex-col gap-1 min-w-[120px] bg-gray-100">
             <Button 
               v-for="lang in languages" 
               :key="lang.code"

@@ -186,8 +186,7 @@ watch(
   sortedItems,
   () => {
     paginationStore.setTotalItems(sortedItems.value.length);
-  },
-  { immediate: true }
+  }
 );
 const toggleSelectAll = (event: Event) => {
   const target = event.target as HTMLInputElement;

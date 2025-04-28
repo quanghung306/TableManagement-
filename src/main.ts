@@ -6,7 +6,7 @@ import PrimeVue from "primevue/config";
 import Button from "primevue/button";
 import router from "./router";
 import i18n from "./i18n";
-
+import Tooltip from 'primevue/tooltip';
 import "./style.css";
 
 import App from "./App.vue";
@@ -21,5 +21,6 @@ createApp(App)
   .use(pinia)
   .use(i18n)
   .component("Button", Button)
+  .directive('tooltip', Tooltip)
   .mount("#app");
   
