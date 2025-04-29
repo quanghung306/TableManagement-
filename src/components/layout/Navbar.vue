@@ -2,7 +2,7 @@
   <nav class="bg-gray-100 border-b border-gray-300 px-6 py-4 flex flex-row-reverse h-16 font-serif mb-1">
     <div class="flex items-center gap-4">
       <!-- Dropdown ngôn ngữ được cải tiến -->
-      <div class="language-selector">
+      <div class="card flex justify-center">
         <Button 
           type="button" 
           @click="toggleLanguageMenu" 
@@ -21,7 +21,7 @@
           </div>
         </Button>
 
-        <OverlayPanel 
+        <Popover  
           ref="languageMenu" 
           :dismissable="true"
           class="language-menu"
@@ -51,7 +51,7 @@
               </div>
             </Button>
           </div>
-        </OverlayPanel>
+        </Popover >
       </div>
 
       <AvatarForm />
@@ -63,7 +63,7 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from 'primevue/button';
-import OverlayPanel from 'primevue/overlaypanel';
+import Popover from 'primevue/popover';
 import AvatarForm from '../common/AvatarForm.vue';
 import { setLanguage } from '../../data/axios';
 import Swal from 'sweetalert2';
@@ -109,26 +109,3 @@ const changeLanguage = (code: string) => {
   });
 };
 </script>
-
-<style scoped>
-.language-selector {
-  position: relative;
-}
-
-.language-menu {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-
-/* Hiệu ứng hover cho nút ngôn ngữ */
-:deep(.p-button.p-button-text.p-button-plain:hover) {
-  background-color: rgba(0, 0, 0, 0.04);
-}
-
-/* Responsive cho mobile */
-@media (max-width: 768px) {
-  .language-selector .language-name {
-    display: none;
-  }
-}
-</style>
